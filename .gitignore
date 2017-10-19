@@ -1,0 +1,14 @@
+
+*.tlog
+*.log
+*.obj
+*.idb
+*.pdb
+*.db
+*.opendb
+*.ipch
+*.db-shm
+*.db-wal
+Launcher/.vs/EGGIN/v15/.suo
+*.exp
+*.lib
