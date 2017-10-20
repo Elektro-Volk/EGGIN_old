@@ -4,4 +4,4 @@
 using namespace std;
 
 const string _VERSION = "0.0.1";
-static bool isDev = false;
+static bool isDev = true;
