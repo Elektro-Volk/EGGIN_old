@@ -6,6 +6,9 @@ struct engineapi {
 		void(*dev)(string str);
 		void(*log)(string str);
 	} console;
+	struct {
+		void (*criticalError)(string error);
+	} host;
 };
 
 extern engineapi api;

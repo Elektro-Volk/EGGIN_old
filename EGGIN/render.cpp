@@ -20,7 +20,7 @@ void render::start()
 	if ((render_lib = lib::open("render/render_opengl.dll")) == NULL)
 		host::criticalError("Unable to load the render engine");
 
-	if ((Render_Main = (renderMain_t)lib::addr(render_lib, "Ren_Main")) == NULL)
+	if ((Render_Main = (renderMain_t)lib::addr(render_lib, "Render_Main")) == NULL)
 		host::criticalError("Incorrect render library");
 	console::dev("...\n");
 
@@ -30,7 +30,7 @@ void render::start()
 
 void render::frame()
 {
-	// TODO
+	render::rApi.main.frame();
 }
 
 void render::shutdown()

@@ -16,6 +16,9 @@ void host::initEngine(int argc, char **argv)
 		{// Console
 			console::log,
 			console::dev,
+		},
+		{// Host
+			host::criticalError
 		}
 	};
 	//__________________________
@@ -39,7 +42,7 @@ void host::frameLoop()
 {
 	while (true)
 	{
-
+		render::frame();
 	}
 }
 
