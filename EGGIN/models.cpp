@@ -19,9 +19,9 @@ render::mesh * models::load(const char * name)
 		if (strcmp(lineHeader, "v") == 0) {
 			float vertex[3];
 			fscanf(file, "%f %f %f\n", &vertex[0], &vertex[1], &vertex[2]);
-			m->vertices.push_back(vertex[0]/10);
-			m->vertices.push_back(vertex[1]/10);
-			m->vertices.push_back(vertex[2]/10);
+			m->vertices.push_back(vertex[0]/20);
+			m->vertices.push_back(vertex[2]/20);
+			m->vertices.push_back(vertex[1]/20);
 		}
 		else if (strcmp(lineHeader, "vt") == 0) {
 			//glm::vec2 uv;
