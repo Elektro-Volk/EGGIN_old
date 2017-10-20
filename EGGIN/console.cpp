@@ -27,6 +27,7 @@ void console::log(string str)
 {
 	if (FILE *file = fopen("engine.log", "a")) {
 		fprintf(file, str.c_str());
+		printf(str.c_str());
 		fclose(file);
 	}
 }
