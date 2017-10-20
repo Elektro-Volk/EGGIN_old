@@ -19,14 +19,15 @@ render::mesh * models::load(const char * name)
 		if (strcmp(lineHeader, "v") == 0) {
 			float vertex[3];
 			fscanf(file, "%f %f %f\n", &vertex[0], &vertex[1], &vertex[2]);
-			m->vertices.push_back(vertex[0]/20);
-			m->vertices.push_back(vertex[2]/20);
-			m->vertices.push_back(vertex[1]/20);
+			m->vertices.push_back(vertex[0]);
+			m->vertices.push_back(vertex[1]);
+			m->vertices.push_back(vertex[2]);
 		}
 		else if (strcmp(lineHeader, "vt") == 0) {
-			//glm::vec2 uv;
-			//fscanf(file, "%f %f\n", &uv.x, &uv.y);
-			//temp_uvs.push_back(uv);
+			float uv[3];
+			fscanf(file, "%f %f\n", &uv[0], &uv[1]);
+			m->uvs.push_back(uv[0]);
+			m->uvs.push_back(uv[1]);
 		}
 		else if (strcmp(lineHeader, "vn") == 0) {
 			//glm::vec3 normal;

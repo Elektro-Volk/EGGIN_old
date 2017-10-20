@@ -29,7 +29,7 @@ void render::start()
 	render::rApi.main.createWindow("EGGIN", 800, 600, false);
 
 	render::mesh* m = models::load("cube.obj");
-	m->pos[2] = -20.0f;
+	m->pos[2] = -100.0f;
 }
 
 void render::frame()

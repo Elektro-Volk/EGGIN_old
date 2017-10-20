@@ -8,6 +8,7 @@ namespace render
 		float pos[3];
 		float rot[3];
 		std::vector<float> vertices;
+		std::vector<float> uvs;
 		bool VBO;
 		int id;
 		
