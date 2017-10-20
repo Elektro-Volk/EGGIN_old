@@ -3,6 +3,7 @@
 #include "render.h"
 // ------------
 #include "api.h"
+#include "SDL.h"
 #include "host.h"
 
 // API
@@ -18,6 +19,10 @@ void host::initEngine(int argc, char **argv)
 		}
 	};
 	//__________________________
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+		return;
+	}
+
 	console::init();
 	render::init();
 
@@ -40,5 +45,6 @@ void host::frameLoop()
 
 void host::criticalError(string error)
 {
-
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "EGGIN Error", error.c_str(), NULL);
+	exit(-1);
 }
