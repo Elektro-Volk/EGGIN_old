@@ -5,9 +5,12 @@ namespace render
 {
 	class mesh {
 	public:
+		float pos[3];
+		float rot[3];
 		std::vector<float> vertices;
 		bool VBO;
-
+		int id;
+		
 		void build();
 	};
 
@@ -16,6 +19,10 @@ namespace render
 			void(*createWindow)(const char *name, int w, int h, bool fullscreen);
 			void (*frame)();
 		} main;
+		struct {
+			render::mesh* (*create)();
+			void (*close)(render::mesh* m);
+		} mesh;
 	};
 
 	extern api_s rApi;

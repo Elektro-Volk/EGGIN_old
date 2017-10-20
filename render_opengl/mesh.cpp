@@ -1,6 +1,8 @@
 #include "GL\glew.h"
 #include "mesh.h"
 
+std::map<int, render::mesh*> mesh::meshes;
+
 void mesh::draw(render::mesh* m)
 {
 	glColor3f(1.0f, 0.0f, 1.0f);
@@ -21,4 +23,21 @@ void mesh::draw(render::mesh* m)
 	glDisableClientState(GL_VERTEX_ARRAY);
 	//glDisableClientState(GL_COLOR_ARRAY);
 	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+render::mesh* mesh::create()
+{
+	render::mesh* m = new render::mesh();
+	int i = 0;
+	while (mesh::meshes.find(i) != mesh::meshes.end())
+		i++;
+	mesh::meshes[i] = m;
+	m->id = i;
+	return m;
+}
+
+void mesh::close(render::mesh* m)
+{
+	mesh::meshes.erase(m->id);
+	delete m;
 }

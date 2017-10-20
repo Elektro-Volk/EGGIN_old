@@ -2,12 +2,13 @@
 #include "libwork.h"
 #include "host.h"
 #include "api.h"
+#include "models.h"
 #include "render.h"
 
 static lib::instance render_lib;
 typedef void(*renderMain_t)(engineapi& api, render::api_s& render_api);
 static renderMain_t Render_Main;
-static render::api_s render::rApi;
+render::api_s render::rApi;
 
 void render::init()
 {
@@ -26,6 +27,9 @@ void render::start()
 
 	Render_Main(api, render::rApi);
 	render::rApi.main.createWindow("EGGIN", 800, 600, false);
+
+	render::mesh* m = models::load("cube.obj");
+	m->pos[2] = -10.0f;
 }
 
 void render::frame()
