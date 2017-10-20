@@ -7,6 +7,7 @@
 static lib::instance render_lib;
 typedef void(*renderMain_t)(engineapi& api, render::api_s& render_api);
 static renderMain_t Render_Main;
+static render::api_s render::rApi;
 
 void render::init()
 {

@@ -6,19 +6,23 @@
 #include "host.h"
 
 // API
-static engineapi api = {
-	{// Console
-		console::log,
-		console::log,
-		console::dev,
-		console::dev,
-	}
-};
+engineapi api;
 
 void host::initEngine(int argc, char **argv)
 {
+	// Init API
+	api = {
+		{// Console
+			console::log,
+			console::dev,
+		}
+	};
+	//__________________________
 	console::init();
 	render::init();
+
+	// Start
+	host::startEngine();
 }
 
 void host::startEngine()
