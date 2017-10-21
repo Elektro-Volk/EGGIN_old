@@ -74,7 +74,7 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
 	gluPerspective(45.0f, aspect, 0.1f, 128.0f);
 }
 
-void frame()
+void preFrame()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -84,6 +84,10 @@ void frame()
 		break;
 	}
 
-	frames::draw();
+	frames::prepare();
+}
+
+void postFrame()
+{
 	SDL_GL_SwapWindow(mainWindow);
 }

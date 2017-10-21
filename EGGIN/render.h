@@ -1,7 +1,6 @@
 #pragma once
 #include "common.h"
-#include <vector>
-#include <map>
+#include "vec.h"
 
 class material {
 public:
@@ -13,8 +12,6 @@ namespace render
 {
 	class mesh {
 	public:
-		float pos[3];
-		float rot[3];
 		std::vector<float> vertices;
 		std::vector<float> uvs;
 		unsigned int vsize;
@@ -28,11 +25,13 @@ namespace render
 	struct api_s {
 		struct {
 			void(*createWindow)(const char *name, int w, int h, bool fullscreen);
-			void (*frame)();
+			void (*preFrame)();
+			void(*postFrame)();
 		} main;
 		struct {
 			render::mesh* (*create)();
 			void (*close)(render::mesh* m);
+			void(*draw)(render::mesh* mesh, vec3 position, vec3 rotation);
 		} mesh;
 		struct {
 			int(*create)(int w, int h, void* pixels);

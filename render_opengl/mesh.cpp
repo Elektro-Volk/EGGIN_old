@@ -3,26 +3,26 @@
 
 std::map<int, render::mesh*> mesh::meshes;
 
-void mesh::draw(render::mesh* m)
+void mesh::draw(render::mesh* mesh, vec3 position, vec3 rotation)
 {
 	glPushMatrix();
 	glMatrixMode(GL_MODELVIEW);
-	glTranslatef(m->pos[0], m->pos[1], m->pos[2]);
+	glTranslatef(position.x, position.y, position.z);
 	glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
-	glBindTexture(GL_TEXTURE_2D, m->mat->textures["main"]);
+	glBindTexture(GL_TEXTURE_2D, mesh->mat->textures["main"]);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glVertexPointer(3, GL_FLOAT, 0, m->vertices.data());
-	glTexCoordPointer(2, GL_FLOAT, 0, m->uvs.data());
+	glVertexPointer(3, GL_FLOAT, 0, mesh->vertices.data());
+	glTexCoordPointer(2, GL_FLOAT, 0, mesh->uvs.data());
 
-	glDrawArrays(GL_TRIANGLES, 0, m->vertices.size()/3);
+	glDrawArrays(GL_TRIANGLES, 0, mesh->vertices.size()/3);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glTranslatef(-m->pos[0], -m->pos[1], -m->pos[2]);
+	glTranslatef(-position.x, -position.y, -position.z);
 }
 
 render::mesh* mesh::create()

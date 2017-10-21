@@ -2,5 +2,5 @@
 
 namespace frames
 {
-	void draw();
+	void prepare();
 }

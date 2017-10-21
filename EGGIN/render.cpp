@@ -4,6 +4,7 @@
 #include "api.h"
 #include "models.h"
 #include "material.h"
+#include "meshrenderer.h"
 #include "render.h"
 
 static lib::instance render_lib;
@@ -29,14 +30,16 @@ void render::start()
 	Render_Main(api, render::rApi);
 	render::rApi.main.createWindow("EGGIN", 800, 600, false);
 
-	render::mesh* m = models::load("cube.obj");
-	m->pos[2] = -100.0f;
-	m->mat = new material("default.mat");
+	meshrenderer *mr = new meshrenderer();
+	mr->mesh = models::load("cube.obj");
+	mr->mesh->mat = new material("default.mat");
+	mr->setGlobalPosition(vec3(0, 0, -50));
+	gameobject::reg(mr);
 }
 
 void render::frame()
 {
-	render::rApi.main.frame();
+	// render::rApi.main.frame();
 }
 
 void render::shutdown()

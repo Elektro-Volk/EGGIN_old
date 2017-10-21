@@ -11,11 +11,13 @@ int EXPORT Render_Main(engineapi& api, render::api_s& render_api)
 	render_api = {
 		{// main
 			createWindow,
-			frame
+			preFrame,
+			postFrame
 		},
 		{// mesh
 			mesh::create,
-			mesh::close
+			mesh::close,
+			mesh::draw
 		},
 		{// texture
 			texture::create,

@@ -1,10 +1,13 @@
 // Init systems
 #include "console.h"
 #include "render.h"
+#include "gameobject.h"
 // ------------
 #include "api.h"
 #include "SDL.h"
 #include "host.h"
+
+#undef main
 
 // API
 engineapi api;
@@ -42,7 +45,10 @@ void host::frameLoop()
 {
 	while (true)
 	{
-		render::frame();
+		render::rApi.main.preFrame();
+		for (auto go : gameobject::gameobjects)
+			go.second->update();
+		render::rApi.main.postFrame();
 	}
 }
 
