@@ -1,5 +1,6 @@
 #include "main.h"
 #include "mesh.h"
+#include "texture.h"
 #include "lib.h"
 
 engineapi engine;
@@ -15,6 +16,10 @@ int EXPORT Render_Main(engineapi& api, render::api_s& render_api)
 		{// mesh
 			mesh::create,
 			mesh::close
+		},
+		{// texture
+			texture::create,
+			texture::free
 		}
 	};
 	return 1;

@@ -34,11 +34,6 @@ render::mesh * models::load(const char * name)
 			//fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
 			//temp_normals.push_back(normal);
 		}
-		else if (strcmp(lineHeader, "vn") == 0) {
-			//glm::vec3 normal;
-			//fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
-			//temp_normals.push_back(normal);
-		}
 		else if (strcmp(lineHeader, "f") == 0) {
 			/*std::string vertex1, vertex2, vertex3;
 			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];

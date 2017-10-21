@@ -124,8 +124,10 @@
     <ClCompile Include="intro.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="libwork.cpp" />
+    <ClCompile Include="material.cpp" />
     <ClCompile Include="models.cpp" />
     <ClCompile Include="render.cpp" />
+    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="api.h" />
@@ -135,6 +137,7 @@
     <ClInclude Include="intro.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="libwork.h" />
+    <ClInclude Include="material.h" />
     <ClInclude Include="models.h" />
     <ClInclude Include="render.h" />
   </ItemGroup>

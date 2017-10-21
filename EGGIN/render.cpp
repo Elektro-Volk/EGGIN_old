@@ -3,6 +3,7 @@
 #include "host.h"
 #include "api.h"
 #include "models.h"
+#include "material.h"
 #include "render.h"
 
 static lib::instance render_lib;
@@ -30,6 +31,7 @@ void render::start()
 
 	render::mesh* m = models::load("cube.obj");
 	m->pos[2] = -100.0f;
+	m->mat = new material("default.mat");
 }
 
 void render::frame()
@@ -41,3 +43,4 @@ void render::shutdown()
 {
 	// TODO
 }
+
