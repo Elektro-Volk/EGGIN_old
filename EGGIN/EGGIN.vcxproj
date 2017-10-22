@@ -120,12 +120,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="console.cpp" />
+    <ClCompile Include="gamelib.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="host.cpp" />
     <ClCompile Include="intro.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="libwork.cpp" />
-    <ClCompile Include="material.cpp" />
     <ClCompile Include="meshrenderer.cpp" />
     <ClCompile Include="models.cpp" />
     <ClCompile Include="render.cpp" />
@@ -135,12 +135,12 @@
     <ClInclude Include="api.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="console.h" />
+    <ClInclude Include="gamelib.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="host.h" />
     <ClInclude Include="intro.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="libwork.h" />
-    <ClInclude Include="material.h" />
     <ClInclude Include="meshrenderer.h" />
     <ClInclude Include="models.h" />
     <ClInclude Include="render.h" />

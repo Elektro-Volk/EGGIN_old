@@ -39,9 +39,6 @@
     <ClCompile Include="models.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="material.cpp">
-      <Filter>Файлы исходного кода\render</Filter>
-    </ClCompile>
     <ClCompile Include="texture.cpp">
       <Filter>Файлы исходного кода\render</Filter>
     </ClCompile>
@@ -49,6 +46,9 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="meshrenderer.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="gamelib.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,13 +80,13 @@
     <ClInclude Include="models.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="material.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="gameobject.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="vec.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="gamelib.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="meshrenderer.h">

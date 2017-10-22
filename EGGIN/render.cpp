@@ -3,7 +3,6 @@
 #include "host.h"
 #include "api.h"
 #include "models.h"
-#include "material.h"
 #include "meshrenderer.h"
 #include "render.h"
 
@@ -29,12 +28,6 @@ void render::start()
 
 	Render_Main(api, render::rApi);
 	render::rApi.main.createWindow("EGGIN", 800, 600, false);
-
-	meshrenderer *mr = new meshrenderer();
-	mr->mesh = models::load("cube.obj");
-	mr->mesh->mat = new material("default.mat");
-	mr->setGlobalPosition(vec3(0, 0, -50));
-	gameobject::reg(mr);
 }
 
 void render::frame()
@@ -47,3 +40,27 @@ void render::shutdown()
 	// TODO
 }
 
+material *material::create(string str)
+{
+	FILE * file = fopen(("materials/" + str).c_str(), "r");
+	if (file == NULL) {
+		printf("Impossible to open the file !\n");    return nullptr;
+	}
+
+	material* mat = new material();
+
+	while (1) {
+		char lineHeader[128];
+		// читаем первый символ в файле
+		int res = fscanf(file, "%s", lineHeader);
+		if (res == EOF)
+			break; // EOF = Конец файла. Заканчиваем цикл чтения
+				   // else : парсим строку
+		if (strcmp(lineHeader, "t") == 0) {
+			char tex[2][64];
+			fscanf(file, "%s %s\n", &tex[0], &tex[1]);
+			mat->textures[string(tex[0])] = texture::load(tex[1]);
+		}
+	}
+	return mat;
+}

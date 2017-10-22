@@ -18,10 +18,25 @@ public:
 	{
 	}
 
-	vec3 getLocalPosition();
-	vec3 getGlobalPosition();
-	void setLocalPosition(vec3 position);
-	void setGlobalPosition(vec3 position);
+	vec3 GameObject::getLocalPosition()
+	{
+		return position;
+	}
+
+	vec3 GameObject::getGlobalPosition()
+	{
+		return parent ? parent->getGlobalPosition() + position : position;
+	}
+
+	void GameObject::setLocalPosition(vec3 position)
+	{
+		this->position = position;
+	}
+
+	void GameObject::setGlobalPosition(vec3 position)
+	{
+		this->position = parent ? parent->getGlobalPosition() + position : position;
+	}
 
 	virtual void update() {}
 };

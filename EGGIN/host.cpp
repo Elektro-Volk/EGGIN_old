@@ -1,7 +1,9 @@
 // Init systems
 #include "console.h"
 #include "render.h"
+#include "gamelib.h"
 #include "gameobject.h"
+#include "models.h"
 // ------------
 #include "api.h"
 #include "SDL.h"
@@ -22,6 +24,16 @@ void host::initEngine(int argc, char **argv)
 		},
 		{// Host
 			host::criticalError
+		},
+		{// Models
+			models::load
+		},
+		{// Gameobjects
+			gameobject::reg,
+			gameobject::unreg
+		},
+		{ // material
+			material::create
 		}
 	};
 	//__________________________
@@ -31,6 +43,7 @@ void host::initEngine(int argc, char **argv)
 
 	console::init();
 	render::init();
+	gamelib::init();
 
 	// Start
 	host::startEngine();
@@ -39,6 +52,7 @@ void host::initEngine(int argc, char **argv)
 void host::startEngine()
 {
 	render::start();
+	gamelib::start();
 }
 
 void host::frameLoop()
@@ -46,6 +60,7 @@ void host::frameLoop()
 	while (true)
 	{
 		render::rApi.main.preFrame();
+		gamelib::rApi.update();
 		for (auto go : gameobject::gameobjects)
 			go.second->update();
 		render::rApi.main.postFrame();

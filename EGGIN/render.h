@@ -5,7 +5,7 @@
 class material {
 public:
 	std::map<std::string, int> textures;
-	material(std::string str);
+	static material* create(std::string str);
 };
 
 namespace render
