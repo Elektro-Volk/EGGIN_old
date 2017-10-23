@@ -120,12 +120,15 @@
     <ClCompile Include="chunk.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="blocks.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Perlin2D.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Skybox.hpp" />
   </ItemGroup>

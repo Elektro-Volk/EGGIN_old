@@ -2,7 +2,7 @@
 
 vector<blocks::block*> blocks::blocks;
 
-material* mat;
+material* blocks::atlas::mat;
 int blocks::atlas::cX = 16;
 int blocks::atlas::cY = 16;
 
@@ -20,7 +20,7 @@ void buildTex(blocks::block* b)
 
 void blocks::init()
 {
-	mat = api->material.create("atlas.mat");
+	blocks::atlas::mat = api->material.create("atlas.mat");
 
 	blocks::atlas::uX = 1.0 / blocks::atlas::cX;
 	blocks::atlas::uY = 1.0 / blocks::atlas::cY;

@@ -2,6 +2,7 @@
 #include "../EGGIN/gameobject.h"
 #include "../EGGIN/api.h"
 #include "../EGGIN/common.h"
+#include "blocks.h"
 
 struct block_data {
 	int bid = 0;
@@ -17,9 +18,7 @@ public:
 	Chunk()
 	{
 		mesh = render::mesh();
-		mesh.mat = api->material.create("atlas.mat");
-		generate();
-		build();
+		mesh.mat = blocks::atlas::mat;
 	}
 
 	void generate();

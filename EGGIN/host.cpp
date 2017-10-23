@@ -71,13 +71,16 @@ void host::frameLoop()
 		input::frame();
 		gamelib::rApi.update();
 		for (auto go : gameobject::gameobjects)
+			if (go.second)
 			go.second->update();
 		
 		render::frame();
 		for (auto go : gameobject::gameobjects)
+			if (go.second)
 			go.second->draw3D();
 		render::rApi.main.set2d();
 		for (auto go : gameobject::gameobjects)
+			if(go.second)
 			go.second->draw2D();
 		render::rApi.main.postFrame();
 	}

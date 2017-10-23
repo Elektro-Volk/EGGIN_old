@@ -1,12 +1,17 @@
 #include "Chunk.h"
 #include "blocks.h"
+#include "Perlin2D.hpp"
 
 void Chunk::generate()
 {
 	for (int x = 0; x < 16; x++)
 		for (int z = 0; z < 16; z++)
+		{
+			int top = /*ValueNoise_2D((position.x + x) / 100.0f, (position.z + z)/100.0f)*/rand()*70+20;
 			for (int y = 0; y < 16; y++)
-				blocks[x][z][y] = { 1 };
+				if(position.y + y <= top)
+					blocks[x][z][y] = { 1 };
+		}
 }
 
 void push_backs(vector<float>* m, vector<float> data)

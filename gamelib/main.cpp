@@ -5,11 +5,18 @@
 #include "Skybox.hpp"
 #include "Chunk.h"
 #include "blocks.h"
+#include "World.h"
+#include <thread>
+
+World* thisWorld;
 
 void init() 
 {
 	
 }
+
+void worldLoop();
+
 
 void start() 
 {
@@ -17,17 +24,24 @@ void start()
 	Skybox *sky = new Skybox();
 	api->gameobject.reg(sky);
 
-	meshrenderer *mr = new meshrenderer();
-	mr->mesh = api->models.load("cube.egg");
-	mr->setGlobalPosition(vec3(0, 0, 50));
-	api->gameobject.reg(mr);
-
 	Player *p = new Player();
 	api->gameobject.reg(p);
 	api->render.camera->parent = p;	
+	p->setGlobalPosition({ 0.0f, 256.0f, 0.0f });
 
-	Chunk *c = new Chunk();
-	api->gameobject.reg(c);
+	thisWorld = new World();
+	api->gameobject.reg(thisWorld);
+	thisWorld->setPlayer(p);
+	thread t = thread(worldLoop);
+	t.detach();
+}
+
+void worldLoop()
+{
+	while (true) {
+		thisWorld->tUpdate();
+		this_thread::sleep_for(chrono::milliseconds(1000));
+	}
 }
 
 void update() {}
