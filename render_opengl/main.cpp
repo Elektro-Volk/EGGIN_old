@@ -6,13 +6,16 @@
 
 SDL_Window *mainWindow;
 SDL_GLContext mainContext;
+GLsizei G_width;
+GLsizei G_height;
 
 void reshape(GLsizei width, GLsizei height);
 
 void createWindow(const char *name, int w, int h, bool fullscreen)
 {
 	SDL_Init(SDL_INIT_VIDEO);              // Initialize SDL2
-
+	G_width = w;
+	G_height = h;
 										   // Create an application window with the following settings:
 	mainWindow = SDL_CreateWindow(
 		name,                  // window title
@@ -22,15 +25,15 @@ void createWindow(const char *name, int w, int h, bool fullscreen)
 		h,                               // height, in pixels
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE               // flags - see below
 	);
-	engine.console.dev("Created window " + string(name) + " " + to_string(w) + "x" + to_string(h) + "\n");
+	api->console.dev("Created window " + string(name) + " " + to_string(w) + "x" + to_string(h) + "\n");
 	// Check that the window was successfully created
 	if (mainWindow == NULL) {
-		engine.host.criticalError("Could not create window: " + string(SDL_GetError()) + "\n");
+		api->host.criticalError("Could not create window: " + string(SDL_GetError()) + "\n");
 	}
 
 
 	// Create our opengl context and attach it to our window
-	engine.console.dev("Create opengl context");
+	api->console.dev("Create opengl context");
 	mainContext = SDL_GL_CreateContext(mainWindow);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -40,7 +43,7 @@ void createWindow(const char *name, int w, int h, bool fullscreen)
 
 	SDL_GL_SetSwapInterval(1);
 
-	engine.console.dev("...\nSetting");
+	api->console.dev("...\nSetting");
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 	glClearDepth(1.0f);                   // Set background depth to farthest
@@ -56,7 +59,7 @@ void createWindow(const char *name, int w, int h, bool fullscreen)
 	SDL_GetWindowPosition(mainWindow, &x, &y);
 	//api.Render_SetRect(x, y, height, width);
 
-	engine.console.dev("...\n");
+	api->console.dev("...\n");
 }
 
 void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
@@ -71,7 +74,7 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
 	glLoadIdentity();             // Reset
 								  // Enable perspective projection with fovy, aspect, zNear and zFar
-	gluPerspective(45.0f, aspect, 0.1f, 128.0f);
+	gluPerspective(45.0f, aspect, 0.1f, 512.0f);
 }
 
 void preFrame()

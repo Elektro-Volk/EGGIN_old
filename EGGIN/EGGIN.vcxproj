@@ -123,10 +123,10 @@
     <ClCompile Include="gamelib.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="host.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="intro.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="libwork.cpp" />
-    <ClCompile Include="meshrenderer.cpp" />
     <ClCompile Include="models.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -138,10 +138,11 @@
     <ClInclude Include="gamelib.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="host.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="intro.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="libwork.h" />
-    <ClInclude Include="meshrenderer.h" />
+    <ClInclude Include="meshrenderer.hpp" />
     <ClInclude Include="models.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="vec.h" />

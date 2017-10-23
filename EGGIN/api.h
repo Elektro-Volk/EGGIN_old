@@ -1,7 +1,6 @@
 #pragma once
 #include "render.h"
 #include "gameobject.h"
-#include "meshrenderer.h"
 #include "common.h"
 
 struct engineapi {
@@ -22,6 +21,14 @@ struct engineapi {
 	struct {
 		material*(*create)(string str);
 	} material;
+	struct {
+		render::api_s *api;
+		GameObject* camera;
+	} render;
+	struct {
+		bool (*isKey)(int code);
+		bool (*isMouseKey)(int code);
+	} input;
 };
 
-extern engineapi api;
+extern engineapi* api;

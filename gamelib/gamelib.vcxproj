@@ -116,12 +116,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="blocks.cpp" />
+    <ClCompile Include="chunk.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blocks.h" />
+    <ClInclude Include="Chunk.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Skybox.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

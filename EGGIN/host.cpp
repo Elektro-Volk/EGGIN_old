@@ -4,6 +4,7 @@
 #include "gamelib.h"
 #include "gameobject.h"
 #include "models.h"
+#include "input.h"
 // ------------
 #include "api.h"
 #include "SDL.h"
@@ -12,12 +13,12 @@
 #undef main
 
 // API
-engineapi api;
+engineapi* api;
 
 void host::initEngine(int argc, char **argv)
 {
 	// Init API
-	api = {
+	api = new engineapi({
 		{// Console
 			console::log,
 			console::dev,
@@ -34,8 +35,16 @@ void host::initEngine(int argc, char **argv)
 		},
 		{ // material
 			material::create
+		},
+		{ // render
+			&render::rApi,
+			render::camera
+		},
+		{ // input
+			input::isKey,
+			input::isMouseKey
 		}
-	};
+	});
 	//__________________________
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		return;
@@ -59,10 +68,17 @@ void host::frameLoop()
 {
 	while (true)
 	{
-		render::rApi.main.preFrame();
+		input::frame();
 		gamelib::rApi.update();
 		for (auto go : gameobject::gameobjects)
 			go.second->update();
+		
+		render::frame();
+		for (auto go : gameobject::gameobjects)
+			go.second->draw3D();
+		render::rApi.main.set2d();
+		for (auto go : gameobject::gameobjects)
+			go.second->draw2D();
 		render::rApi.main.postFrame();
 	}
 }

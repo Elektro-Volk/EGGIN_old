@@ -10,5 +10,5 @@
 
 extern "C"
 {
-	int EXPORT Render_Main(engineapi& api, render::api_s& render_api);
+	int EXPORT Render_Main(engineapi* api, render::api_s& render_api);
 }

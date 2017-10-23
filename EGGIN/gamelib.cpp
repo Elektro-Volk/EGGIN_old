@@ -5,7 +5,7 @@
 #include "gamelib.h"
 
 static lib::instance game_lib;
-typedef void(*gameMain_t)(engineapi& api, gamelib::api_s& game_api);
+typedef void(*gameMain_t)(engineapi* api, gamelib::api_s& game_api);
 static gameMain_t Game_Main;
 gamelib::api_s gamelib::rApi;
 

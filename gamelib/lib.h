@@ -10,5 +10,5 @@
 
 extern "C"
 {
-	int EXPORT Game_Main(engineapi& api, gamelib::api_s& game_api);
+	int EXPORT Game_Main(engineapi* api, gamelib::api_s& game_api);
 }

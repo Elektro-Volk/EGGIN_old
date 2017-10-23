@@ -2,14 +2,12 @@
 #include "libwork.h"
 #include "host.h"
 #include "api.h"
-#include "models.h"
-#include "meshrenderer.h"
-#include "render.h"
 
 static lib::instance render_lib;
-typedef void(*renderMain_t)(engineapi& api, render::api_s& render_api);
+typedef void(*renderMain_t)(engineapi* api, render::api_s& render_api);
 static renderMain_t Render_Main;
 render::api_s render::rApi;
+GameObject *render::camera;
 
 void render::init()
 {
@@ -28,11 +26,15 @@ void render::start()
 
 	Render_Main(api, render::rApi);
 	render::rApi.main.createWindow("EGGIN", 800, 600, false);
+	// Create camera
+	camera = new GameObject();
+	api->render.camera = camera;
 }
 
 void render::frame()
 {
-	// render::rApi.main.frame();
+	render::rApi.camera.set(render::camera->getGlobalPosition(), render::camera->getGlobalRotation());
+	render::rApi.main.preFrame();
 }
 
 void render::shutdown()

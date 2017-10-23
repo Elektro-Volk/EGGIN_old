@@ -1,18 +1,21 @@
 #include "main.h"
 #include "mesh.h"
 #include "texture.h"
+#include "camera.h"
+#include "frame.h"
 #include "lib.h"
 
-engineapi engine;
+engineapi* api;
 
-int EXPORT Render_Main(engineapi& api, render::api_s& render_api)
+int EXPORT Render_Main(engineapi* _api, render::api_s& render_api)
 {
-	engine = api;
+	api = _api;
 	render_api = {
 		{// main
 			createWindow,
 			preFrame,
-			postFrame
+			postFrame,
+			frames::set2d
 		},
 		{// mesh
 			mesh::create,
@@ -22,6 +25,9 @@ int EXPORT Render_Main(engineapi& api, render::api_s& render_api)
 		{// texture
 			texture::create,
 			texture::free
+		},
+		{// camera
+			camera::setCam
 		}
 	};
 	return 1;

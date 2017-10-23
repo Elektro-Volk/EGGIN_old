@@ -8,7 +8,11 @@ void mesh::draw(render::mesh* mesh, vec3 position, vec3 rotation)
 	glPushMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glTranslatef(position.x, position.y, position.z);
-	glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
+	// Rotation
+	glRotatef(rotation.x, 1, 0, 0);
+	glRotatef(rotation.y, 0, 1, 0);
+	glRotatef(rotation.z, 0, 0, 1);
+	//
 	glBindTexture(GL_TEXTURE_2D, mesh->mat->textures["main"]);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -22,6 +26,12 @@ void mesh::draw(render::mesh* mesh, vec3 position, vec3 rotation)
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
+
+	// Rotation
+	glRotatef(-rotation.x, 1, 0, 0);
+	glRotatef(-rotation.y, 0, 1, 0);
+	glRotatef(-rotation.z, 0, 0, 1);
+	//
 	glTranslatef(-position.x, -position.y, -position.z);
 }
 

@@ -45,10 +45,10 @@
     <ClCompile Include="gameobject.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="meshrenderer.cpp">
+    <ClCompile Include="gamelib.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="gamelib.cpp">
+    <ClCompile Include="input.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,7 +89,10 @@
     <ClInclude Include="gamelib.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="meshrenderer.h">
+    <ClInclude Include="meshrenderer.hpp">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

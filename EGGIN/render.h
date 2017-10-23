@@ -1,6 +1,5 @@
 #pragma once
-#include "common.h"
-#include "vec.h"
+#include "gameobject.h"
 
 class material {
 public:
@@ -27,6 +26,7 @@ namespace render
 			void(*createWindow)(const char *name, int w, int h, bool fullscreen);
 			void (*preFrame)();
 			void(*postFrame)();
+			void(*set2d)();
 		} main;
 		struct {
 			render::mesh* (*create)();
@@ -37,9 +37,13 @@ namespace render
 			int(*create)(int w, int h, void* pixels);
 			void(*free)(int tid);
 		} texture;
+		struct {
+			void (*set)(vec3 pos, vec3 rot);
+		} camera;
 	};
 
 	extern api_s rApi;
+	extern GameObject *camera;
 
 	void init();
 	void start();

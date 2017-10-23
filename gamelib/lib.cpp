@@ -1,9 +1,12 @@
+/*
+	MeCuWorld New
+*/
 #include "lib.h"
 #include "main.h"
 
-engineapi api;
+engineapi *api;
 
-int EXPORT Game_Main(engineapi& _api, gamelib::api_s& game_api)
+int EXPORT Game_Main(engineapi* _api, gamelib::api_s& game_api)
 {
 	api = _api;
 	game_api = {

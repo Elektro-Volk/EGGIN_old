@@ -1,5 +1,6 @@
 #include "camera.h"
 #include <cmath>
+#include "api.h"
 #include <GL/glew.h>     
 
 vec3 camera::pos;
@@ -13,14 +14,13 @@ void camera::setCam(vec3 pos, vec3 rot)
 
 void camera::setup()
 {
-	float PI = 3.141592653; //Замечательно число Пи
+	float rad = 57.3; //Замечательно число Пи
 
 	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 	glLoadIdentity();                 // Reset the model-view matrix
 	gluLookAt(camera::pos.x, camera::pos.y, camera::pos.z, 
-		camera::pos.x - sin(camera::rot.z / 180 * PI),
-		camera::pos.y + (tan(camera::rot.y / 180 * PI)),
-		camera::pos.z - cos(camera::rot.x / 180 * PI),
+		camera::pos.x - sin(camera::rot.y / rad),
+		camera::pos.y + tan(camera::rot.x / rad),
+		camera::pos.z + cos(camera::rot.y / rad),
 		0, 1, 0);
-
 }
