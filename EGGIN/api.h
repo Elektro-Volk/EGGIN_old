@@ -15,10 +15,10 @@ struct engineapi {
 		render::mesh* (*load)(const char* name);
 	} models;
 	struct {
-		int (*reg)(GameObject* go);
+		void (*reg)(GameObject* go);
 		void (*unreg)(GameObject* go);
 	} gameobject;
-	struct {
+	struct { 
 		material*(*create)(string str);
 	} material;
 	struct {

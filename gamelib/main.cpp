@@ -15,7 +15,12 @@ void init()
 	
 }
 
-void worldLoop();
+void worldLoop()
+{
+	for (int x = -2; x < 2; x++)
+		for (int z = -2; z < 2; z++)
+			thisWorld->buildColumn(x, z);
+}
 
 
 void start() 
@@ -36,12 +41,6 @@ void start()
 	t.detach();
 }
 
-void worldLoop()
-{
-	while (true) {
-		thisWorld->tUpdate();
-		this_thread::sleep_for(chrono::milliseconds(1000));
-	}
-}
+
 
 void update() {}

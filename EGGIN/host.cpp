@@ -70,18 +70,15 @@ void host::frameLoop()
 	{
 		input::frame();
 		gamelib::rApi.update();
-		for (auto go : gameobject::gameobjects)
-			if (go.second)
-			go.second->update();
+		for (gameobject::GoList *E = gameobject::gameobjects; E != nullptr; E = E->next)
+			E->go->update();
 		
 		render::frame();
-		for (auto go : gameobject::gameobjects)
-			if (go.second)
-			go.second->draw3D();
+		for (gameobject::GoList *E = gameobject::gameobjects; E != nullptr; E = E->next)
+			E->go->draw3D();
 		render::rApi.main.set2d();
-		for (auto go : gameobject::gameobjects)
-			if(go.second)
-			go.second->draw2D();
+		for (gameobject::GoList *E = gameobject::gameobjects; E != nullptr; E = E->next)
+			E->go->draw2D();
 		render::rApi.main.postFrame();
 	}
 }

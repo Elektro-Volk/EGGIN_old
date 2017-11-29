@@ -63,8 +63,14 @@ public:
 
 namespace gameobject
 {
-	extern std::map<int, GameObject*> gameobjects;
+	struct GoList {
+		GameObject* go;
+		struct GoList* next;
+	};
+	extern GoList *gameobjects;
 
-	int reg(GameObject* go);
+
+
+	void reg(GameObject* go);
 	void unreg(GameObject* go);
 }

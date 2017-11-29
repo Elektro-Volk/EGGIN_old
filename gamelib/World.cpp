@@ -58,9 +58,12 @@ void World::buildColumn(int x, int z)
 
 void World::tUpdate()
 {
-	vec3 p = player->getGlobalPosition();
-	vec3 *t = FindNearestEmptyColumn((int)p.x / 8, (int)p.z / 8, 5);
-	if (t != nullptr)
-		buildColumn(t->x, t->z);
-	delete t;
+	//vec3 p = player->getGlobalPosition();
+	//vec3 *t = FindNearestEmptyColumn((int)p.x / 8, (int)p.z / 8, 5);
+	//if (t != nullptr)
+	//	buildColumn(t->x, t->z);
+	//delete t;
+	//for (int x = -2; x < 2; x++)
+	//	for (int z = -2; z < 2; z++)
+	//		buildColumn(x, z);
 }

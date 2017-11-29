@@ -1,19 +1,17 @@
 #include "gameobject.h"
 
-std::map<int, GameObject*> gameobject::gameobjects;
+gameobject::GoList *gameobject::gameobjects = nullptr;
 
-int gameobject::reg(GameObject* go)
+void gameobject::reg(GameObject* go)
 {
-	int i = 0;
-	while (gameobject::gameobjects.find(i) != gameobject::gameobjects.end())
-		i++;
-	gameobject::gameobjects[i] = go;
-	go->id = i;
-	return i;
+	GoList* E = new GoList();
+	E->next = gameobjects;
+	E->go = go;
+	gameobjects = E;
 }
 
 void gameobject::unreg(GameObject* go)
 {
-	gameobject::gameobjects.erase(go->id);
+	//gameobject::gameobjects.erase(go->id);
 }
 
