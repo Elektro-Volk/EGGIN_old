@@ -18,10 +18,10 @@ void mesh::draw(render::mesh* mesh, vec3 position, vec3 rotation)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glVertexPointer(3, GL_FLOAT, 0, mesh->vertices.data());
-	glTexCoordPointer(2, GL_FLOAT, 0, mesh->uvs.data());
+	glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
+	glTexCoordPointer(2, GL_FLOAT, 0, mesh->uvs);
 
-	glDrawArrays(GL_TRIANGLES, 0, mesh->vertices.size()/3);
+	glDrawArrays(GL_TRIANGLES, 0, mesh->vert_size);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);

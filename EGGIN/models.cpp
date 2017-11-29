@@ -8,6 +8,8 @@ render::mesh * models::load(const char * name)
 	}
 
 	render::mesh* m = render::rApi.mesh.create();
+	vector<float> *verts = new vector<float>();
+	vector<float> *uvs = new vector<float>();
 
 	while (1) {
 		char lineHeader[128];
@@ -19,15 +21,15 @@ render::mesh * models::load(const char * name)
 		if (strcmp(lineHeader, "v") == 0) {
 			float vertex[3];
 			fscanf(file, "%f %f %f\n", &vertex[0], &vertex[1], &vertex[2]);
-			m->vertices.push_back(vertex[0]);
-			m->vertices.push_back(vertex[1]);
-			m->vertices.push_back(vertex[2]);
+			verts->push_back(vertex[0]);
+			verts->push_back(vertex[1]);
+			verts->push_back(vertex[2]);
 		}
 		else if (strcmp(lineHeader, "vt") == 0) {
 			float uv[3];
 			fscanf(file, "%f %f\n", &uv[0], &uv[1]);
-			m->uvs.push_back(uv[0]);
-			m->uvs.push_back(uv[1]);
+			uvs->push_back(uv[0]);
+			uvs->push_back(uv[1]);
 		}
 		else if (strcmp(lineHeader, "mat") == 0) {
 			char matname[128];
@@ -59,5 +61,9 @@ render::mesh * models::load(const char * name)
 			}*/
 		}
 	}
+	m->uvs = uvs->data();
+	m->uv_size = uvs->size();
+	m->vertices = verts->data();
+	m->vert_size = verts->size() / 3;
 	return m;
 }

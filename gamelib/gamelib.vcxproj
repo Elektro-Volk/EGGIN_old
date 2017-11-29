@@ -118,6 +118,7 @@
   <ItemGroup>
     <ClCompile Include="blocks.cpp" />
     <ClCompile Include="chunk.cpp" />
+    <ClCompile Include="FastNoise.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="World.cpp" />

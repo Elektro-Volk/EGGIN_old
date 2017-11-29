@@ -5,8 +5,8 @@
 #include "blocks.h"
 
 struct block_data {
-	int bid = 0;
-	map<int, string> data;
+	short int bid = 0;
+	map<char, string> *data = nullptr;
 };
 
 class Chunk : public GameObject

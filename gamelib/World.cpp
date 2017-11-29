@@ -1,12 +1,17 @@
 #include "World.h"
+#include <math.h>
+#include <thread>
 
 bool World::isColumn(int x, int z)
 {
-	return chunks.find(x) == chunks.end() && chunks[x].find(z) == chunks[x].end();
+	return chunks.find(x) != chunks.end() && chunks[x].find(z) != chunks[x].end();
 }
 
 vec3 *World::FindNearestEmptyColumn(int cx, int cz, int rad)
 {
+	if (!isColumn(cx, cz)) {
+		return new vec3(cx, 0, cz);
+	}
 	vec3 center = vec3(cx, 0, cz);
 	vec3 near;
 	bool isNear = false;
@@ -40,6 +45,7 @@ Chunk* World::createChunk(int x, int y, int z)
 {
 	Chunk *c = new Chunk();
 	api->gameobject.reg(c);
+	c->parent = this;
 	c->setGlobalPosition({ x * 16.0f, y * 16.0f, z * 16.0f });
 	c->generate();
 	c->build();
@@ -52,17 +58,19 @@ void World::buildColumn(int x, int z)
 		chunks[x] = map<int, vector<Chunk*>>();
 	chunks[x][z] = vector<Chunk*>();
 	vector<Chunk*>* col = &chunks[x][z];
-	for (int y = 0; y < 16; y++)
+	for (int y = 0; y < 8; y++) {
 		col->push_back(createChunk(x, y, z));
+		this_thread::yield();
+	}
 }
 
 void World::tUpdate()
 {
-	//vec3 p = player->getGlobalPosition();
-	//vec3 *t = FindNearestEmptyColumn((int)p.x / 8, (int)p.z / 8, 5);
-	//if (t != nullptr)
-	//	buildColumn(t->x, t->z);
-	//delete t;
+	vec3 p = player->getGlobalPosition();
+	vec3 *t = FindNearestEmptyColumn(floor(p.x / 16.f), floor(p.z / 16.f), 5);
+	if (t != nullptr)
+		buildColumn(t->x, t->z);
+	delete t;
 	//for (int x = -2; x < 2; x++)
 	//	for (int z = -2; z < 2; z++)
 	//		buildColumn(x, z);

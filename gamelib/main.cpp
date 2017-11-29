@@ -17,9 +17,12 @@ void init()
 
 void worldLoop()
 {
-	for (int x = -2; x < 2; x++)
-		for (int z = -2; z < 2; z++)
-			thisWorld->buildColumn(x, z);
+	//for (int x = -2; x < 2; x++)
+		//for (int z = -2; z < 2; z++)
+		//	thisWorld->buildColumn(x, z);
+	while (true) {
+		thisWorld->tUpdate();
+	}
 }
 
 
@@ -32,7 +35,7 @@ void start()
 	Player *p = new Player();
 	api->gameobject.reg(p);
 	api->render.camera->parent = p;	
-	p->setGlobalPosition({ 0.0f, 256.0f, 0.0f });
+	p->setGlobalPosition({ 0.0f, 25.0f, 0.0f });
 
 	thisWorld = new World();
 	api->gameobject.reg(thisWorld);

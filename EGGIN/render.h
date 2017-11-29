@@ -11,9 +11,10 @@ namespace render
 {
 	class mesh {
 	public:
-		std::vector<float> vertices;
-		std::vector<float> uvs;
-		unsigned int vsize;
+		float *vertices;
+		float *uvs;
+		unsigned int vert_size;
+		unsigned int uv_size;
 		material* mat;
 		bool VBO;
 		int id;

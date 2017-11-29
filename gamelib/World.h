@@ -1,5 +1,6 @@
 #pragma once
 #include "Chunk.h"
+#include "FastNoise.h"
 #include <map>
 
 
@@ -9,6 +10,13 @@ private:
 	map<int, map<int, vector<Chunk*>>> chunks;
 	GameObject* player;
 public:
+	FastNoise noise;
+
+	World() 
+	{
+		noise = FastNoise();
+	}
+
 	void setPlayer(GameObject* g) {
 		player = g;
 	}
