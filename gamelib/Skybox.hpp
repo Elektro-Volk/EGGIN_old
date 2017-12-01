@@ -11,7 +11,7 @@ public:
 	Skybox()
 	{
 		mesh = render::mesh();
-		vector<float> verts = {
+		mesh.vertices = new float[90] {
 			-100, -100, 100,
 			100, -100, 100,
 			100, 100, 100,
@@ -47,7 +47,7 @@ public:
 			-100, 100, 100,
 			100, 100, 100
 		};
-		vector<float> uvs = {
+		mesh.uvs = new float[60] {
 			0.25, 0.66666f,
 			0.0, 0.66666f,
 			0.0, 0.33333f,
@@ -84,10 +84,7 @@ public:
 			0.25, 0.0f,
 		};
 
-		mesh.uvs = uvs.data();
-		mesh.vertices = verts.data();
-		mesh.vert_size = verts.size() / 3;
-		mesh.uv_size = uvs.size();
+		mesh.vert_size = 30;
 		mesh.mat = api->material.create("sky_day.mat");
 		parent = api->render.camera;
 	};

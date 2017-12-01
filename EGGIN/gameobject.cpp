@@ -12,6 +12,14 @@ void gameobject::reg(GameObject* go)
 
 void gameobject::unreg(GameObject* go)
 {
-	//gameobject::gameobjects.erase(go->id);
+	GoList* last = gameobjects;
+	for (GoList* gs = gameobjects; gs != nullptr; gs = gs->next) {
+		if (gs->go == go) {
+			last->next = gs->next;
+			delete gs;
+			break;
+		}
+		last = gs;
+	}
 }
 

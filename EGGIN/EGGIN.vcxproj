@@ -80,7 +80,7 @@
       <AdditionalIncludeDirectories>D:\CProj\EGGIN\Libs\SDL2-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)../../../Build/$(TargetName)$(TargetExt)</OutputFile>
+      <OutputFile>$(OutDir)../../Build/$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>D:\CProj\EGGIN\Libs\SDL2-2.0.5\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

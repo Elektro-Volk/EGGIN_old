@@ -78,7 +78,7 @@
       <AdditionalIncludeDirectories>D:\CProj\EGGIN\Libs\glew-2.0.0\include;D:\CProj\EGGIN\Libs\SDL2-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)../../../Build/render/$(TargetName)$(TargetExt)</OutputFile>
+      <OutputFile>$(OutDir)../../Build/render/$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>D:\CProj\EGGIN\Libs\glew-2.0.0\lib\Release\Win32;D:\CProj\EGGIN\Libs\SDL2-2.0.5\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;SDL2.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

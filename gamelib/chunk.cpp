@@ -15,7 +15,7 @@ void Chunk::generate()
 				+ noise->GetPerlin(X * 5.0f, Z * 5.0f) * 10.f
 				+ noise->GetPerlin(X * 1.0f, Z * 1.0f) * 25.f
 				+ noise->GetPerlin(X * 0.1f, Z * 0.1f) * 50.f;
-			int top = n*(noise->GetPerlin(X * 0.05f, Z * 0.05f)/2.f+0.5f) +20;
+			int top = n*(noise->GetPerlin(X * 0.1f, Z * 0.1f)/2.f+0.5f) + 20;
 			for (int y = 0; y < 16; y++)
 				if(position.y + y <= top)
 					blocks[x][z][y] = { 1 };
@@ -114,8 +114,19 @@ void Chunk::build()
 				}
 			}
 
-	mesh.uvs = uvs->data();
-	mesh.uv_size = uvs->size();
-	mesh.vertices = verts->data();
 	mesh.vert_size = verts->size() / 3;
+	mesh.uv_size = uvs->size();
+
+	mesh.uvs = (float*)malloc(sizeof(float) * uvs->size());
+	memcpy(mesh.uvs, uvs->data(), sizeof(float) * uvs->size());
+	
+	mesh.vertices = (float*)malloc(sizeof(float) * verts->size());
+	memcpy(mesh.vertices, verts->data(), sizeof(float) * verts->size());
+
+	delete verts, uvs;
+}
+
+block_data * Chunk::getBlock(int x, int y, int z)
+{
+	return &blocks[x][z][y];
 }
