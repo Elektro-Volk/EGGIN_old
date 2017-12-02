@@ -92,15 +92,15 @@ public:
 				dx += -sin((rotation.y + 90) / 57.3) * spd * 0.8f;
 			}
 
-		if (api->input.isKey(SDL_SCANCODE_LEFT))
-			this->rotation.y -= 1.0f;
-		if (api->input.isKey(SDL_SCANCODE_RIGHT))
-			this->rotation.y += 1.0f;
+			int rotX, rotY;
+			api->input.getMouseSpeed(rotX, rotY);
 
-		if (api->input.isKey(SDL_SCANCODE_UP))
-			this->rotation.x += 1.0f;
-		if (api->input.isKey(SDL_SCANCODE_DOWN))
-			this->rotation.x -= 1.0f;
+			this->rotation.y += rotX / 5.f;
+			this->rotation.x -= rotY / 5.f;
+			if (this->rotation.x > 80)
+				rotation.x = 80;
+			if (this->rotation.x < -80)
+				rotation.x = -80;
 	}
 
 };

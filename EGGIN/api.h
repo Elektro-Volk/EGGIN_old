@@ -28,6 +28,7 @@ struct engineapi {
 	struct {
 		bool (*isKey)(int code);
 		bool (*isMouseKey)(int code);
+		void (*getMouseSpeed)(int &x, int &y);
 	} input;
 };
 

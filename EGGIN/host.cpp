@@ -42,7 +42,8 @@ void host::initEngine(int argc, char **argv)
 		},
 		{ // input
 			input::isKey,
-			input::isMouseKey
+			input::isMouseKey,
+			input::getMouseSpeed
 		}
 	});
 	//__________________________
