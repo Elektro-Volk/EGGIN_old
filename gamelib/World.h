@@ -1,6 +1,6 @@
 #pragma once
 #include "Chunk.h"
-#include "FastNoise.h"
+#include "WorldGenerator.h"
 #include <map>
 #include <time.h>
 
@@ -14,12 +14,11 @@ private:
 	CL* chunks = nullptr;
 	bool clock = false;
 	GameObject* player;
+	WorldGenerator *gen;
 public:
-	FastNoise noise;
-
-	World() 
+	World(WorldGenerator *gen)
 	{
-		noise = FastNoise(time(0));
+		this->gen = gen;
 	}
 
 	void setPlayer(GameObject* g) {

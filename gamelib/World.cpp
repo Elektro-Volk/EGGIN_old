@@ -1,4 +1,5 @@
 #include "World.h"
+#include "main.h"
 #include <math.h>
 #include <thread>
 
@@ -76,8 +77,6 @@ Chunk* World::createChunk(int x, int y, int z)
 	Chunk *c = new Chunk(x, y, z);
 	c->parent = this;
 	c->setGlobalPosition({ x * 16.0f, y * 16.0f, z * 16.0f });
-	c->generate();
-	c->build();
 	return c;
 }
 
@@ -85,11 +84,12 @@ void World::buildColumn(int x, int z)
 {
 	CL* E = new CL();
 	E->next = chunks;
-	E->C = (Chunk**)malloc(sizeof(Chunk*) * 8);
-	for (int y = 0; y < 8; y++) {
+	E->C = (Chunk **)malloc(sizeof(Chunk*) * 8);
+	for (int y = 0; y < 8; y++)
 		E->C[y] = createChunk(x, y, z);
-		this_thread::yield();
-	}
+	gen->generateColumn(E->C);
+	for (int y = 0; y < 8; y++)
+		E->C[y]->build();
 	chunks = E;
 }
 
@@ -119,11 +119,11 @@ void World::tUpdate()
 	int x = floor(p.x / 16.0f);
 	int z = floor(p.z / 16.0f);
 
-	vec3* t = FindNearestEmptyColumn(x, z, 2);
+	vec3* t = FindNearestEmptyColumn(x, z, 5);
 	if (t != nullptr)
 		buildColumn(t->x, t->z);
 	delete t;
-	ClearFar(x, z, 3);
+	ClearFar(x, z, 6);
 }
 
 void World::draw3D()

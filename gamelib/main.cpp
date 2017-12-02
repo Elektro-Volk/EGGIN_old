@@ -3,12 +3,13 @@
 #include "../EGGIN/meshrenderer.hpp"
 #include "Player.hpp"
 #include "Skybox.hpp"
-#include "Chunk.h"
 #include "blocks.h"
 #include "World.h"
+#include "WorldGenerator.h"
 #include <thread>
 
 World* thisWorld;
+WorldGenerator *generator;
 
 void init() 
 {
@@ -45,6 +46,8 @@ void worldLoop()
 void start() 
 {
 	blocks::init();
+	generator = new WorldGenerator(time(0));
+
 	Skybox *sky = new Skybox();
 	api->gameobject.reg(sky);
 
@@ -53,7 +56,7 @@ void start()
 	api->render.camera->parent = p;	
 	api->render.camera->setLocalPosition(vec3(0.f, 1.8f, 0.f));
 
-	thisWorld = new World();
+	thisWorld = new World(generator);
 	api->gameobject.reg(thisWorld);
 	thisWorld->setPlayer(p);
 	thread t = thread(worldLoop);

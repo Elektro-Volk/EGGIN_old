@@ -2,25 +2,6 @@
 #include "Chunk.h"
 #include "blocks.h"
 
-void Chunk::generate()
-{
-	FastNoise *noise = &((World*)parent)->noise;
-	for (int x = 0; x < 16; x++)
-		for (int z = 0; z < 16; z++)
-		{
-			float X = position.x + x;
-			float Z = position.z + z;
-			
-			int n = noise->GetPerlin(X * 10.0f, Z * 10.0f) * 5.0f // Global
-				+ noise->GetPerlin(X * 5.0f, Z * 5.0f) * 10.f
-				+ noise->GetPerlin(X * 1.0f, Z * 1.0f) * 25.f
-				+ noise->GetPerlin(X * 0.1f, Z * 0.1f) * 50.f;
-			int top = n*(noise->GetPerlin(X * 0.1f, Z * 0.1f)/2.f+0.5f) + 20;
-			for (int y = 0; y < 16; y++)
-				if(position.y + y <= top)
-					blocks[x][z][y] = { 1 };
-		}
-}
 
 void push_backs(vector<float>* m, vector<float> data)
 {
@@ -49,20 +30,22 @@ void Chunk::build()
 	vector<float> *verts = new vector<float>();
 	vector<float> *uvs = new vector<float>();
 
-	for (int x = 0; x<16; x++)
-		for (int y = 0; y<16; y++)
+	for (int x = 0; x < 16; x++) {
+		float xp = x + 0.5f;
+		float xm = x - 0.5f;
+		for (int y = 0; y < 16; y++) {
+			float yp = y + 0.5f;
+			float ym = y - 0.5f;
 			for (int z = 0; z < 16; z++)
 			{
 				int blockId = blocks[x][z][y].bid;
 				if (!blockId)
 					continue;
-				
-				float xp = x + 0.5f;
-				float xm = x - 0.5f;
-				float yp = y + 0.5f;
-				float ym = y - 0.5f;
+
 				float zp = z + 0.5f;
 				float zm = z - 0.5f;
+
+				blocks::block* b = blocks::blocks[blockId];
 
 				/* FORWARD */
 				if (!isBlock(blocks, x, y, z + 1)) {
@@ -70,7 +53,7 @@ void Chunk::build()
 						xm, ym, zp, xp, ym, zp,
 						xp, yp, zp, xp, yp, zp,
 						xm, yp, zp, xm, ym, zp });
-					push_backs(uvs, blocks::atlas::getUV(blockId, 0));
+					push_backs(uvs, blocks::atlas::getUV(b, 0));
 				}
 				/* BACK */
 				if (!isBlock(blocks, x, y, z - 1)) {
@@ -78,7 +61,7 @@ void Chunk::build()
 						xm, ym, zm, xp, ym, zm,
 						xp, yp, zm, xp, yp, zm,
 						xm, yp, zm, xm, ym, zm });
-					push_backs(uvs, blocks::atlas::getUV(blockId, 1));
+					push_backs(uvs, blocks::atlas::getUV(b, 1));
 				}
 				/* LEFT */
 				if (!isBlock(blocks, x - 1, y, z)) {
@@ -86,7 +69,7 @@ void Chunk::build()
 						xm, ym, zm, xm, ym, zp,
 						xm, yp, zp, xm, yp, zp,
 						xm, yp, zm, xm, ym, zm });
-					push_backs(uvs, blocks::atlas::getUV(blockId, 2));
+					push_backs(uvs, blocks::atlas::getUV(b, 2));
 				}
 				/* RIGHT */
 				if (!isBlock(blocks, x + 1, y, z)) {
@@ -94,7 +77,7 @@ void Chunk::build()
 						xp, ym, zm, xp, ym, zp,
 						xp, yp, zp, xp, yp, zp,
 						xp, yp, zm, xp, ym, zm });
-					push_backs(uvs, blocks::atlas::getUV(blockId, 3));
+					push_backs(uvs, blocks::atlas::getUV(b, 3));
 				}
 				/* TOP */
 				if (!isBlock(blocks, x, y + 1, z)) {
@@ -102,7 +85,7 @@ void Chunk::build()
 						xm, yp, zm, xm, yp, zp,
 						xp, yp, zp, xp, yp, zp,
 						xp, yp, zm, xm, yp, zm });
-					push_backs(uvs, blocks::atlas::getUV(blockId, 4));
+					push_backs(uvs, blocks::atlas::getUV(b, 4));
 				}
 				/* BOTTOM */
 				if (!isBlock(blocks, x, y - 1, z)) {
@@ -110,9 +93,11 @@ void Chunk::build()
 						xm, ym, zm, xm, ym, zp,
 						xp, ym, zp, xp, ym, zp,
 						xp, ym, zm, xm, ym, zm });
-					push_backs(uvs, blocks::atlas::getUV(blockId, 5));
+					push_backs(uvs, blocks::atlas::getUV(b, 5));
 				}
 			}
+		}
+	}
 
 	mesh.vert_size = verts->size() / 3;
 	mesh.uv_size = uvs->size();

@@ -30,6 +30,6 @@ namespace blocks
 		extern float uX;
 		extern float uY;
 
-		vector<float> getUV(int block, int tid);
+		vector<float> getUV(block* block, int tid);
 	}
 }

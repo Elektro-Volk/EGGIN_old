@@ -123,6 +123,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="World.h" />
+    <ClCompile Include="WorldGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="blocks.h" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Perlin2D.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Skybox.hpp" />
+    <ClInclude Include="WorldGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,15 +27,21 @@ void blocks::init()
 	blocks::blocks.push_back(NULL);// Wind :D
 
 	blocks::block* b = new blocks::block();
+	//             FORW   BACK   LEFT   RIGHT  TOP    BOTOM
 	b->texture = { {3,0}, {3,0}, {3,0}, {3,0}, {0,0}, {2,0} };
 	buildTex(b);
 	blocks::blocks.push_back(b);
+
+	blocks::block* b2 = new blocks::block();
+	b2->texture = { { 12,2 },{ 13,2 },{ 13,2 },{ 13,2 },{ 14,4 },{ 14,4 } };
+	buildTex(b2);
+	blocks::blocks.push_back(b2);
 }
 
-vector<float> blocks::atlas::getUV(int block, int tid)
+vector<float> blocks::atlas::getUV(block* block, int tid)
 {
-	float x2 = blocks[block]->texture[tid].ux;
-	float y2 = blocks[block]->texture[tid].uy;
+	float x2 = block->texture[tid].ux;
+	float y2 = block->texture[tid].uy;
 	float x = x2 + blocks::atlas::uX;
 	float y = y2 + blocks::atlas::uY;
 	

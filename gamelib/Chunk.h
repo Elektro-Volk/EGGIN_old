@@ -12,10 +12,11 @@ struct block_data {
 class Chunk : public GameObject
 {
 private:
-	block_data blocks[16][16][16];
 	render::mesh mesh;
 public:
+	block_data blocks[16][16][16];
 	int X, Y, Z;
+
 	Chunk(int x, int y, int z)
 	{
 		mesh = render::mesh();
@@ -31,7 +32,6 @@ public:
 		free(mesh.uvs);
 	}
 
-	void generate();
 	void build();
 	block_data* getBlock(int x, int y, int z);
 	void draw3D() override
