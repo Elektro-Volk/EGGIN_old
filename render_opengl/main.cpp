@@ -23,7 +23,7 @@ void createWindow(const char *name, int w, int h, bool fullscreen)
 		SDL_WINDOWPOS_UNDEFINED,           // initial y position
 		w,                               // width, in pixels
 		h,                               // height, in pixels
-		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE               // flags - see below
+		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0)           // flags - see below
 	);
 	api->console.dev("Created window " + string(name) + " " + to_string(w) + "x" + to_string(h) + "\n");
 	// Check that the window was successfully created
@@ -74,7 +74,7 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
 	glLoadIdentity();             // Reset
 								  // Enable perspective projection with fovy, aspect, zNear and zFar
-	gluPerspective(45.0f, aspect, 0.1f, 512.0f);
+	gluPerspective(90, aspect, 0.1f, 512.0f);
 }
 
 void preFrame()
@@ -84,6 +84,14 @@ void preFrame()
 	{
 		if (event.type == SDL_QUIT)
 			exit(1);
+		if (event.type == SDL_WINDOWEVENT) {
+			if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+			{
+				G_width = event.window.data1;
+				G_height = event.window.data2;
+				reshape(G_width, G_height);
+			}
+		}
 		break;
 	}
 
