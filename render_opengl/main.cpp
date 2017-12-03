@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "GL\glew.h"
 #include "frame.h"
+#include "camera.h"
 #include "api.h"
 
 SDL_Window *mainWindow;
@@ -74,7 +75,7 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
 	glLoadIdentity();             // Reset
 								  // Enable perspective projection with fovy, aspect, zNear and zFar
-	gluPerspective(90, aspect, 0.1f, 512.0f);
+	gluPerspective(camera::fov, aspect, 0.1f, 512.0f);
 }
 
 void preFrame()

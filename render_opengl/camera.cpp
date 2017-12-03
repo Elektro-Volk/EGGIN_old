@@ -5,11 +5,17 @@
 
 vec3 camera::pos;
 vec3 camera::rot;
+int camera::fov = 90;
 
 void camera::setCam(vec3 pos, vec3 rot)
 {
 	camera::pos = pos;
 	camera::rot = rot;
+}
+
+void camera::setFov(int _fov)
+{
+	fov = _fov;
 }
 
 void camera::setup()

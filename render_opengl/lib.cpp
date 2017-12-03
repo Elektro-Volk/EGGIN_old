@@ -27,7 +27,8 @@ int EXPORT Render_Main(engineapi* _api, render::api_s& render_api)
 			texture::free
 		},
 		{// camera
-			camera::setCam
+			camera::setCam,
+			camera::setFov
 		}
 	};
 	return 1;

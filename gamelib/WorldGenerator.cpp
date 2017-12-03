@@ -25,8 +25,10 @@ void WorldGenerator::generateColumn(Chunk ** chunks)
 				
 				for (int y = 0; y < 16; y++) {
 					float Y = c->position.y + y;
-					if (Y <= top)
+					if (Y <= top) {
 						c->blocks[x][z][y] = { 1 };
+						c->nB = false;
+					}
 				}
 			}
 		}

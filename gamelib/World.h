@@ -28,7 +28,7 @@ public:
 	Chunk* getChunk(int x, int y, int z);
 	bool isColumn(int x, int z);
 	vec3* FindNearestEmptyColumn(int cx, int cz, int rad);
-	void ClearFar(int x, int z, int rad);
+	bool ClearFar(int x, int z, int rad);
 	Chunk* createChunk(int x, int y, int z);
 	void buildColumn(int x, int z);
 	void remColumn(int x, int z);

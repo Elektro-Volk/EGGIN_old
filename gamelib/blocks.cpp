@@ -38,12 +38,12 @@ void blocks::init()
 	blocks::blocks.push_back(b2);
 }
 
-vector<float> blocks::atlas::getUV(block* block, int tid)
+float *blocks::atlas::getUV(block* block, int tid)
 {
 	float x2 = block->texture[tid].ux;
 	float y2 = block->texture[tid].uy;
 	float x = x2 + blocks::atlas::uX;
 	float y = y2 + blocks::atlas::uY;
 	
-	return { x, y, x2, y, x2, y2, x2, y2, x, y2, x, y };
+	return new float[12]{ x, y, x2, y, x2, y2, x2, y2, x, y2, x, y };
 }

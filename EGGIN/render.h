@@ -40,6 +40,7 @@ namespace render
 		} texture;
 		struct {
 			void (*set)(vec3 pos, vec3 rot);
+			void(*setFov)(int fov);
 		} camera;
 	};
 

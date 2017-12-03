@@ -15,6 +15,7 @@ private:
 	render::mesh mesh;
 public:
 	block_data blocks[16][16][16];
+	bool nB = true;
 	int X, Y, Z;
 
 	Chunk(int x, int y, int z)
@@ -29,13 +30,14 @@ public:
 	~Chunk()
 	{
 		free(mesh.vertices);
-		free(mesh.uvs);
+   		free(mesh.uvs);
 	}
 
 	void build();
 	block_data* getBlock(int x, int y, int z);
 	void draw3D() override
 	{
-		api->render.api->mesh.draw(&this->mesh, this->getGlobalPosition(), vec3());
+		if(!nB)
+			api->render.api->mesh.draw(&this->mesh, this->getGlobalPosition(), vec3());
 	}
 };

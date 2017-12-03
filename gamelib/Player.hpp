@@ -9,16 +9,15 @@ class Player : public GameObject
 {
 public:
 	float dx, dy, dz;
-	float w, h, d;  // width, height, depth 
 	bool onGround;
 	float speed;
-	const float size = 1.f;
+	float rSpeed = 1.f;
 
 	Player(float x0, float y0, float z0)
 	{
 		setGlobalPosition(vec3(x0, y0, z0));
 		dx = 0; dy = 0; dz = 0;
-		w = 5; h = 20; d = 5; speed = 2;
+		speed = 2;
 		onGround = false;
 	}
 
@@ -46,9 +45,9 @@ public:
 		onGround = 0;
 
 		collision(0, dy, 0);
-		position.x -= dx*time;
-		position.y += dy*time;
-		position.z -= dz*time;
+		position.x -= dx*time*rSpeed;
+		position.y += dy*time*rSpeed;
+		position.z -= dz*time*rSpeed;
 
 		dx /= 2.f;
 		dz /= 2.f;
@@ -56,41 +55,51 @@ public:
 			dx = 0;
 		if (dz > -0.1f || dz < 0.1f)
 			dz = 0;
+		if (onGround && dy <= 0.f && rSpeed > 1.f) {
+			rSpeed -= 0.01f;
+		}
 
 		if (position.y < -10.f)
 			position.y = 100.f;
+
+		//api->render.api->camera.setFov(90 * (rSpeed / 2.f + 0.5f));
 	}
 
 	
 
 	void keyboard()
 	{
-		if (api->input.isKey(SDL_SCANCODE_SPACE)) if (onGround) { onGround = false; dy = 3; };
+		if (onGround && api->input.isKey(SDL_SCANCODE_SPACE)) { 
+			onGround = false;
+			dy = 3;
+			rSpeed += 0.02f;
+		}
 			float spd = api->input.isKey(SDL_SCANCODE_LSHIFT) ? speed * 1.5f : speed;
 
-			if (api->input.isKey(SDL_SCANCODE_W))
-			{
-				dz += -cos(rotation.y / 57.3) * spd;
-				dx += sin(rotation.y / 57.3) * spd;
-			}
+				if (api->input.isKey(SDL_SCANCODE_W))
+				{
+					dz += -cos(rotation.y / 57.3) * spd;
+					dx += sin(rotation.y / 57.3) * spd;
+				}
 
-			if (api->input.isKey(SDL_SCANCODE_S))
-			{
-				dz += cos(rotation.y / 57.3) * spd;
-				dx += -sin(rotation.y / 57.3) * spd;
-			}
+				if (api->input.isKey(SDL_SCANCODE_S))
+				{
+					dz += cos(rotation.y / 57.3) * spd;
+					dx += -sin(rotation.y / 57.3) * spd;
+				}
 
-			if (api->input.isKey(SDL_SCANCODE_D))
-			{
-				dz += -cos((rotation.y + 90) / 57.3) * spd * 0.8f;
-				dx += sin((rotation.y + 90) / 57.3) * spd * 0.8f;
-			}
+				if (api->input.isKey(SDL_SCANCODE_D))
+				{
+					dz += -cos((rotation.y + 90) / 57.3) * spd * 0.8f;
+					dx += sin((rotation.y + 90) / 57.3) * spd * 0.8f;
+				}
 
-			if (api->input.isKey(SDL_SCANCODE_A))
-			{
-				dz += cos((rotation.y + 90) / 57.3) * spd * 0.8f;
-				dx += -sin((rotation.y + 90) / 57.3) * spd * 0.8f;
-			}
+				if (api->input.isKey(SDL_SCANCODE_A))
+				{
+					dz += cos((rotation.y + 90) / 57.3) * spd * 0.8f;
+					dx += -sin((rotation.y + 90) / 57.3) * spd * 0.8f;
+				}
+			
 
 			int rotX, rotY;
 			api->input.getMouseSpeed(rotX, rotY);

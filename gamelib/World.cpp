@@ -57,7 +57,7 @@ vec3* World::FindNearestEmptyColumn(int cx, int cz, int rad)
 	return isNear ? new vec3(near) : nullptr;
 }
 
-void  World::ClearFar(int x, int z, int rad)
+bool World::ClearFar(int x, int z, int rad)
 {
 	while (clock)
 		this_thread::yield();
@@ -67,9 +67,10 @@ void  World::ClearFar(int x, int z, int rad)
 		if (pos.distance(vec3(gs->C[0]->X, 0.f, gs->C[0]->Z)) > rad) {
 			remColumn(gs->C[0]->X, gs->C[0]->Z);
 			clock = false;
-			return;
+			return true;
 		}
 	clock = false;
+	return false;
 }
 
 Chunk* World::createChunk(int x, int y, int z)
@@ -88,8 +89,10 @@ void World::buildColumn(int x, int z)
 	for (int y = 0; y < 8; y++)
 		E->C[y] = createChunk(x, y, z);
 	gen->generateColumn(E->C);
-	for (int y = 0; y < 8; y++)
+	for (int y = 0; y < 8; y++) {
+		this_thread::sleep_for(chrono::milliseconds(1));
 		E->C[y]->build();
+	}
 	chunks = E;
 }
 
@@ -119,11 +122,13 @@ void World::tUpdate()
 	int x = floor(p.x / 16.0f);
 	int z = floor(p.z / 16.0f);
 
-	vec3* t = FindNearestEmptyColumn(x, z, 5);
+	vec3* t = FindNearestEmptyColumn(x, z, 3);
 	if (t != nullptr)
 		buildColumn(t->x, t->z);
 	delete t;
-	ClearFar(x, z, 6);
+
+	while(ClearFar(x, z, 4))
+		this_thread::sleep_for(chrono::milliseconds(2));
 }
 
 void World::draw3D()
