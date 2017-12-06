@@ -3,11 +3,12 @@
 #include "SDL.h"
 #include "common.h"
 #include "render.h"
+#include "SDL_image.h"
 
 int texture::load(string name)
 {
-	SDL_Surface* textureImage = SDL_LoadBMP(("textures/"+name).c_str());
-	int tid = render::rApi.texture.create(textureImage->w, textureImage->h, textureImage->pixels);
+	SDL_Surface* textureImage = IMG_Load(("textures/"+name).c_str());
+	int tid = render::rApi.texture.create(textureImage);
 	SDL_FreeSurface(textureImage);
 	return tid;
 }

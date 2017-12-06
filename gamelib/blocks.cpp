@@ -28,14 +28,35 @@ void blocks::init()
 
 	blocks::block* b = new blocks::block();
 	//             FORW   BACK   LEFT   RIGHT  TOP    BOTOM
+	// Grass - 1
 	b->texture = { {3,0}, {3,0}, {3,0}, {3,0}, {0,0}, {2,0} };
 	buildTex(b);
 	blocks::blocks.push_back(b);
-
-	blocks::block* b2 = new blocks::block();
-	b2->texture = { { 12,2 },{ 13,2 },{ 13,2 },{ 13,2 },{ 14,4 },{ 14,4 } };
-	buildTex(b2);
-	blocks::blocks.push_back(b2);
+	// Dirt - 2
+	blocks::block* dirt = new blocks::block();
+	dirt->texture = { { 2,0 },{ 2,0 },{ 2,0 },{ 2,0 },{ 2,0 },{ 2,0 } };
+	buildTex(dirt);
+	blocks::blocks.push_back(dirt);
+	// Rock - 3
+	blocks::block* rock = new blocks::block();
+	rock->texture = { { 1,0 },{ 1,0 },{ 1,0 },{ 1,0 },{ 1,0 },{ 1,0 } };
+	buildTex(rock);
+	blocks::blocks.push_back(rock);
+	// Water - 4
+	blocks::block* water = new blocks::block();
+	water->texture = { { 13,12 },{ 13,12 },{ 13,12 },{ 13,12 },{ 13,12 },{ 13,12 } };
+	buildTex(water);
+	blocks::blocks.push_back(water);
+	// Sand - 5
+	blocks::block* sand = new blocks::block();
+	sand->texture = { { 2,1 },{ 2,1 },{ 2,1 },{ 2,1 },{ 2,1 },{ 2,1 } };
+	buildTex(sand);
+	blocks::blocks.push_back(sand);
+	// Wood - 6
+	blocks::block* wood = new blocks::block();
+	wood->texture = { { 4,0 },{ 4,0 },{ 4,0 },{ 4,0 },{ 4,0 },{ 4,0 } };
+	buildTex(wood);
+	blocks::blocks.push_back(wood);
 }
 
 float *blocks::atlas::getUV(block* block, int tid)

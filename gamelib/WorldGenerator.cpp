@@ -15,10 +15,10 @@ void WorldGenerator::generateColumn(Chunk ** chunks)
 		{
 			float Z = pos.z + z;
 
-			int n = noise.GetPerlin(X * 10.0f, Z * 10.0f) * 5.0f // Global
-				+ noise.GetPerlin(X * 1.0f, Z * 1.0f) * 25.f
-				+ noise.GetPerlin(X * 0.1f, Z * 0.1f) * 50.f;
-			int top = n*(noise.GetPerlin(X * 0.1f, Z * 0.1f) / 2.f + 0.5f) + 20;
+			int n = noise.GetPerlin(X * 10.0f, Z * 10.0f) * 10.0f // Global
+				+ noise.GetPerlin(X * 1.0f, Z * 1.0f) * 50.f
+				+ noise.GetPerlin(X * 0.1f, Z * 0.1f) * 150.f;
+			int top = n*noise.GetSimplex(X * 0.1f, Z * 0.1f) + 32;
 
 			for (int i = 0; i < 8; i++) {
 				Chunk* c = chunks[i];
@@ -26,9 +26,20 @@ void WorldGenerator::generateColumn(Chunk ** chunks)
 				for (int y = 0; y < 16; y++) {
 					float Y = c->position.y + y;
 					if (Y <= top) {
-						c->blocks[x][z][y] = { 1 };
+						int r = top - Y;
+						short bid = 1;
+						// Get block
+						if (r > 5)
+							bid = 3;// Rock
+						else if (r > 1)
+							bid = 2;// Dirt
+						else if (Y < 33)
+							bid = 5;// Sand
+
+						c->blocks[x][z][y] = { bid };
 						c->nB = false;
-					}
+					}else if(Y<32)
+						c->blocks[x][z][y] = { 4 }; // Water
 				}
 			}
 		}

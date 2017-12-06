@@ -16,6 +16,9 @@
     <Filter Include="Файлы исходного кода\render">
       <UniqueIdentifier>{ce00a7f6-c130-46ca-838b-d0bcc2cdc94a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\EUI">
+      <UniqueIdentifier>{f9615bdc-5204-4050-a727-fe8fda34d4c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib.cpp">
@@ -94,6 +97,15 @@
     </ClInclude>
     <ClInclude Include="input.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="EUI_elements.h">
+      <Filter>Заголовочные файлы\EUI</Filter>
+    </ClInclude>
+    <ClInclude Include="lock.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="EUI_controller.h">
+      <Filter>Заголовочные файлы\EUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

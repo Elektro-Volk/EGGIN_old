@@ -3,6 +3,8 @@
 #include "WorldGenerator.h"
 #include <map>
 #include <time.h>
+#define BP(x) (int)(x > 0.f ? x + 0.5f : x - 0.5f)
+#define BPY(x) (int)(x < 0.f ? x + 0.5f : x - 0.5f)
 
 class World : public GameObject
 {
@@ -15,15 +17,10 @@ private:
 	bool clock = false;
 	GameObject* player;
 	WorldGenerator *gen;
-public:
-	World(WorldGenerator *gen)
-	{
-		this->gen = gen;
-	}
 
-	void setPlayer(GameObject* g) {
-		player = g;
-	} 
+	void loop();
+public:
+	World(WorldGenerator *gen, GameObject* player);
 
 	Chunk* getChunk(int x, int y, int z);
 	bool isColumn(int x, int z);
@@ -32,6 +29,15 @@ public:
 	Chunk* createChunk(int x, int y, int z);
 	void buildColumn(int x, int z);
 	void remColumn(int x, int z);
-	void tUpdate();
+
+	bool setBlock(vec3 p, block_data b, bool rebuild = false);
+	bool setBlock(int x, int y, int z, block_data b, bool rebuild = false);
+	block_data *getBlock(vec3 p);
+	block_data *getBlock(int x, int y, int z);
+	bool isBlock(vec3 p);
+	bool isBlock(int x, int y, int z);
+
+	Chunk* getLocalPos(vec3 gpos, int &_x, int &_y, int &_z);
+
 	void draw3D() override;
 };

@@ -16,6 +16,7 @@ namespace render
 		unsigned int vert_size;
 		unsigned int uv_size;
 		material* mat;
+		int texture = -1;
 		bool VBO;
 		int id;
 		
@@ -35,7 +36,7 @@ namespace render
 			void(*draw)(render::mesh* mesh, vec3 position, vec3 rotation);
 		} mesh;
 		struct {
-			int(*create)(int w, int h, void* pixels);
+			int(*create)(void* data);
 			void(*free)(int tid);
 		} texture;
 		struct {

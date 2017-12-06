@@ -1,6 +1,5 @@
 #pragma once
 #include "../EGGIN/gameobject.h"
-#include "../../Libs/SDL2-2.0.5/include/SDL_keyboard.h"
 #include "../EGGIN/api.h"
 
 class Skybox : public GameObject

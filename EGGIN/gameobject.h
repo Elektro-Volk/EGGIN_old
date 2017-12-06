@@ -63,14 +63,10 @@ public:
 
 namespace gameobject
 {
-	struct GoList {
-		GameObject* go;
-		struct GoList* next;
-	};
-	extern GoList *gameobjects;
-
-
+	extern GameObject** gameobjects;
+	extern int nGos;
 
 	void reg(GameObject* go);
 	void unreg(GameObject* go);
+	void call(void(GameObject::*)());
 }

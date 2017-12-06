@@ -6,6 +6,7 @@
 const Uint8 *keystate;
 int input::curX, input::curY;
 int input::spdX, input::spdY;
+bool input::lockCursor;
 
 void input::frame()
 {
@@ -19,6 +20,12 @@ void input::frame()
 
 	curX = pt.x;
 	curY = pt.y;
+
+	if (lockCursor) {
+		curX = 900;
+		curY = 500;
+		SetCursorPos(900, 500);
+	}
 }
 
 bool input::isKey(int code)
@@ -35,4 +42,9 @@ void input::getMouseSpeed(int &x, int &y)
 {
 	x = spdX;
 	y = spdY;
+}
+
+void input::setLockCursor(bool lock)
+{
+	lockCursor = lock;
 }

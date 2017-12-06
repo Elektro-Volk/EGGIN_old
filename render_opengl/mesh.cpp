@@ -13,7 +13,10 @@ void mesh::draw(render::mesh* mesh, vec3 position, vec3 rotation)
 	glRotatef(rotation.y, 0, 1, 0);
 	glRotatef(rotation.z, 0, 0, 1);
 	//
-	glBindTexture(GL_TEXTURE_2D, mesh->mat->textures["main"]);
+	glBindTexture(
+		GL_TEXTURE_2D,
+		mesh->texture == -1 ? mesh->mat->textures["main"] : mesh->texture
+	);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);

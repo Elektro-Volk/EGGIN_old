@@ -1,7 +1,34 @@
 #include "World.h"
-#include "main.h"
-#include <math.h>
 #include <thread>
+
+void World::loop()
+{
+	vec3 *p = &player->position;
+	while (true) {
+		int x = floor(p->x / 16.f);
+		int z = floor(p->z / 16.f);
+
+		vec3* t = FindNearestEmptyColumn(x, z, 3);
+		if (t != nullptr)
+			buildColumn(t->x, t->z);
+		delete t;
+		this_thread::sleep_for(chrono::milliseconds(5));
+
+		ClearFar(x, z, 4);
+		this_thread::sleep_for(chrono::milliseconds(10));
+	}
+}
+
+World::World(WorldGenerator * gen, GameObject* player)
+{
+	this->gen = gen;
+	this->player = player;
+
+	thread t = thread(&World::loop, this);
+	t.detach();
+
+	api->gameobject.reg(this);
+}
 
 Chunk* World::getChunk(int x, int y, int z)
 {
@@ -73,7 +100,7 @@ bool World::ClearFar(int x, int z, int rad)
 	return false;
 }
 
-Chunk* World::createChunk(int x, int y, int z)
+Chunk * World::createChunk(int x, int y, int z)
 {
 	Chunk *c = new Chunk(x, y, z);
 	c->parent = this;
@@ -105,7 +132,6 @@ void World::remColumn(int x, int z)
 			c = gs->C;
 
 			for (int i = 0; i < 8; i++) {
-				api->gameobject.unreg(c[i]);
 				delete c[i];
 			}
 			last->next = gs->next;
@@ -116,24 +142,67 @@ void World::remColumn(int x, int z)
 	}
 }
 
-void World::tUpdate()
+bool World::setBlock(int x, int y, int z, block_data b, bool rebuild)
 {
-	vec3 p = player->getGlobalPosition();
-	int x = floor(p.x / 16.0f);
-	int z = floor(p.z / 16.0f);
+	int _x, _y, _z;
+	if (Chunk* chunk = this->getLocalPos(vec3(x, y, z), _x, _y, _z)) {
+		chunk->blocks[_x][_z][_y] = b;
+		if (rebuild)
+			chunk->build();
+		return true;
+	}
+	return false;
+}
 
-	vec3* t = FindNearestEmptyColumn(x, z, 3);
-	if (t != nullptr)
-		buildColumn(t->x, t->z);
-	delete t;
+block_data* World::getBlock(int x, int y, int z)
+{
+	int _x,_y,_z;
+	if (Chunk* chunk = this->getLocalPos(vec3(x, y, z), _x, _y, _z)) {
+		return &chunk->blocks[_x][_z][_y];
+	}
+	return nullptr;
+}
 
-	while(ClearFar(x, z, 4))
-		this_thread::sleep_for(chrono::milliseconds(2));
+bool World::isBlock(int x, int y, int z)
+{
+	block_data *b = getBlock(x,y,z);
+	return b && b->bid != 0;
+}
+//
+bool World::setBlock(vec3 p, block_data b, bool rebuild)
+{
+	return setBlock(BP(p.x), BPY(p.y), BP(p.z), b, rebuild);
+}
+
+block_data * World::getBlock(vec3 p)
+{
+	return getBlock(BP(p.x), BPY(p.y), BP(p.z));
+}
+
+bool World::isBlock(vec3 p)
+{
+	return isBlock(BP(p.x), BPY(p.y), BP(p.z));
+}
+//
+
+Chunk * World::getLocalPos(vec3 gpos, int &x, int &y, int &z)
+{
+	vec3 p(floor(gpos.x / 16.f), floor(gpos.y / 16.f), floor(gpos.z / 16.f));
+	if (p.y < 0 || p.y > 7)
+		return nullptr;
+	if (auto C = getChunk(p.x, p.y, p.z))
+	{
+		x = floor(gpos.x - p.x * 16);
+		y = floor(gpos.y - p.y * 16);
+		z = floor(gpos.z - p.z * 16);
+		return C;
+	}
+	return nullptr;
 }
 
 void World::draw3D()
 {
-	while (clock)
+	while (clock) 
 		this_thread::yield();
 	clock = true;
 	for (CL *E = chunks; E != nullptr; E = E->next)

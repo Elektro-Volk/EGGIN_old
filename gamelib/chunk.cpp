@@ -20,7 +20,7 @@ vector<float> getUV(float x, float y, float x2, float y2)
 	return { x, y, x2, y, x2, y2, x2, y2, x, y2, x, y };
 }
 
-int isBlock(block_data (&blocks)[16][16][16], int x, int y, int z)
+int isBlock(block_data (&blocks)[16][16][16], int x, int y, int z)//, Chunk c[])
 {
 	if (x < 0 || x >= 16)
 		return 0;
@@ -36,6 +36,8 @@ void Chunk::build()
 	if (nB) return; // NULL CHUNK
 	float* verts = nullptr, *uvs = nullptr;
 	int nVerts = 0, nUvs = 0;
+
+	//Chunk cs[6] = {};
 
 	for (int x = 0; x < 16; x++) {
 		float xp = x + 0.5f;

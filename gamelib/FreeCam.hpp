@@ -1,13 +1,14 @@
-/*#pragma once
+#pragma once
 #include "../EGGIN/gameobject.h"
-#include "../../Libs/SDL2-2.0.5/include/SDL_keyboard.h"
+#include "../../Libs/SDL2-2.0.7/include/SDL_keyboard.h"
 #include "../EGGIN/api.h"
 
-class Player : public GameObject
+class FreeCam : public GameObject
 {
 public:
-	Player()
+	FreeCam()
 	{
+		api->gameobject.reg(this);
 	}
 
 	void update() override
@@ -45,4 +46,4 @@ public:
 		if (api->input.isKey(SDL_SCANCODE_DOWN))
 			this->rotation.x -= 1.0f;
 	}
-	};*/
+	};

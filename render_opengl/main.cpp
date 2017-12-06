@@ -47,12 +47,16 @@ void createWindow(const char *name, int w, int h, bool fullscreen)
 	api->console.dev("...\nSetting");
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-	glClearDepth(1.0f);                   // Set background depth to farthest
+	glClearDepth(1.0f); 
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
 	glEnable(GL_TEXTURE_2D); //Enable texture mapping.
 	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
 	glShadeModel(GL_SMOOTH);   // Enable smooth shading
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	reshape(w, h);
 

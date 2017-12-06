@@ -77,12 +77,12 @@
       <SDLCheck>true</SDLCheck>
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\CProj\EGGIN\Libs\SDL2-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\CProj\EGGIN\Libs\SDL2_image-2.0.2\include;D:\CProj\EGGIN\Libs\SDL2-2.0.7\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)../../Build/$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>D:\CProj\EGGIN\Libs\SDL2-2.0.5\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\CProj\EGGIN\Libs\SDL2_image-2.0.2\lib\x86;D:\CProj\EGGIN\Libs\SDL2-2.0.7\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,6 +135,8 @@
     <ClInclude Include="api.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="console.h" />
+    <ClInclude Include="EUI_controller.h" />
+    <ClInclude Include="EUI_elements.h" />
     <ClInclude Include="gamelib.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="host.h" />
@@ -142,6 +144,7 @@
     <ClInclude Include="intro.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="libwork.h" />
+    <ClInclude Include="lock.h" />
     <ClInclude Include="meshrenderer.hpp" />
     <ClInclude Include="models.h" />
     <ClInclude Include="render.h" />

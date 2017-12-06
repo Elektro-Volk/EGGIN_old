@@ -29,7 +29,12 @@ struct engineapi {
 		bool (*isKey)(int code);
 		bool (*isMouseKey)(int code);
 		void (*getMouseSpeed)(int &x, int &y);
+		void(*setLockCursor)(bool lock);
 	} input;
+	struct {
+		int (*load)(std::string path);
+		void (*free)(int tid);
+	} texture;
 };
 
 extern engineapi* api;

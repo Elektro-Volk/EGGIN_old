@@ -1,25 +1,46 @@
 #include "gameobject.h"
+#include "lock.h"
 
-gameobject::GoList *gameobject::gameobjects = nullptr;
+GameObject** gameobject::gameobjects = nullptr;
+int gameobject::nGos = 0;
+LSECT golist_lock = lock_new();
 
 void gameobject::reg(GameObject* go)
 {
-	GoList* E = new GoList();
-	E->next = gameobjects;
-	E->go = go;
-	gameobjects = E;
+	lock_lock(golist_lock);
+	if (gameobjects == nullptr)
+		gameobjects = (GameObject**)malloc(sizeof(GameObject*));
+	else
+		gameobjects = (GameObject**)realloc(gameobjects, (nGos + 1) * sizeof(GameObject*));
+	gameobjects[nGos] = go;
+	nGos++;
+	lock_unlock(golist_lock);
 }
 
 void gameobject::unreg(GameObject* go)
 {
-	GoList* last = gameobjects;
-	for (GoList* gs = gameobjects; gs != nullptr; gs = gs->next) {
-		if (gs->go == go) {
-			last->next = gs->next;
-			delete gs;
-			break;
+	lock_lock(golist_lock);
+	GameObject **newArray = (GameObject**)malloc((nGos - 1) * sizeof(GameObject*));
+	int newI = 0;
+	for (int i = 0; i < nGos; i++) 
+		if(gameobjects[i] != go){
+			newArray[newI] = go;
+			newI++;
 		}
-		last = gs;
-	}
+ 	free(gameobjects);
+	gameobjects = newArray;
+	nGos--;
+	lock_unlock(golist_lock);
+}
+
+void gameobject::call(void(GameObject::*F)())
+{
+	lock_lock(golist_lock);
+	//if (gameobjects != nullptr) {
+		for (int i = 0; i < nGos; i++) {
+			(gameobjects[i]->*F)();
+		}
+	//}
+	lock_unlock(golist_lock);
 }
 

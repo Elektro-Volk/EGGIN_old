@@ -116,11 +116,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlockCursor.hpp" />
     <ClCompile Include="blocks.cpp" />
     <ClCompile Include="chunk.cpp" />
     <ClCompile Include="FastNoise.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="World.h" />
     <ClCompile Include="WorldGenerator.cpp" />
@@ -131,6 +133,8 @@
     <ClInclude Include="FreeCam.hpp" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="menuhome.h" />
     <ClInclude Include="Perlin2D.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Skybox.hpp" />

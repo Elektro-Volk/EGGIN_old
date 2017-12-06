@@ -43,7 +43,12 @@ void host::initEngine(int argc, char **argv)
 		{ // input
 			input::isKey,
 			input::isMouseKey,
-			input::getMouseSpeed
+			input::getMouseSpeed,
+			input::setLockCursor
+		},
+		{ // Textures
+			texture::load,
+			texture::unload
 		}
 	});
 	//__________________________
@@ -71,15 +76,12 @@ void host::frameLoop()
 	{
 		input::frame();
 		gamelib::rApi.update();
-		for (gameobject::GoList *E = gameobject::gameobjects; E != nullptr; E = E->next)
-			E->go->update();
+		gameobject::call(&GameObject::update);
 		
 		render::frame();
-		for (gameobject::GoList *E = gameobject::gameobjects; E != nullptr; E = E->next)
-			E->go->draw3D();
+		gameobject::call(&GameObject::draw3D);
 		render::rApi.main.set2d();
-		for (gameobject::GoList *E = gameobject::gameobjects; E != nullptr; E = E->next)
-			E->go->draw2D();
+		gameobject::call(&GameObject::draw2D);
 		render::rApi.main.postFrame();
 	}
 }
