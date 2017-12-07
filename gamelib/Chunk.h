@@ -21,7 +21,8 @@ public:
 	Chunk(int x, int y, int z)
 	{
 		mesh = render::mesh();
-		mesh.mat = blocks::atlas::mat;
+		mesh.texture = blocks::atlas::texture;
+		mesh.rtype = render::mesh::RT::quads;
 		X = x;
 		Y = y;
 		Z = z;

@@ -1,23 +1,25 @@
 #include "World.h"
 #include "Chunk.h"
 #include "blocks.h"
-#include <array>
 
-void push_backs(float *m[], float data[], int &size, int add)
+void push_backs(float *m[], float data[], int &size, int &as, int add)
 {
-	if (size == 0)
-		*m = (float *)malloc(add * sizeof(float*));
-	else
-		*m = (float *)realloc(*m, (size + add) * sizeof(float*));
+	if (add + size > as) {
+		as += 100;
+		if (size == 0)
+			*m = (float *)malloc(as * sizeof(float*));
+		else
+			*m = (float *)realloc(*m, as * sizeof(float*));		
+	}
 	for (int i = 0; i < add; i++)
 		(*m)[size + i] = data[i];
 	size += add;
-	delete[] data;
 }
 
-vector<float> getUV(float x, float y, float x2, float y2)
+void push_backs_rem(float *m[], float data[], int &size, int &as, int add)
 {
-	return { x, y, x2, y, x2, y2, x2, y2, x, y2, x, y };
+	push_backs(m, data, size, as, add);
+	delete[] data;
 }
 
 int isBlock(block_data (&blocks)[16][16][16], int x, int y, int z)//, Chunk c[])
@@ -35,7 +37,7 @@ void Chunk::build()
 {
 	if (nB) return; // NULL CHUNK
 	float* verts = nullptr, *uvs = nullptr;
-	int nVerts = 0, nUvs = 0;
+	int nVerts = 0, nUvs = 0, sVerts = 0, sUvs = 0;
 
 	//Chunk cs[6] = {};
 
@@ -58,51 +60,52 @@ void Chunk::build()
 
 				/* FORWARD */
 				if (!isBlock(blocks, x, y, z + 1)) {
-					push_backs(&verts, new float[18]{
-						xm, ym, zp, xp, ym, zp,
-						xp, yp, zp, xp, yp, zp,
-						xm, yp, zp, xm, ym, zp }, nVerts, 18);
-					push_backs(&uvs, blocks::atlas::getUV(b, 0), nUvs, 12);
+					push_backs_rem(&verts, new float[12]{
+						xm, ym, zp,
+						xp, ym, zp,
+						xp, yp, zp,
+						xm, yp, zp }, nVerts, sVerts, 12);
+					push_backs(&uvs, blocks::atlas::getUV(b, 0), nUvs, sUvs, 8);
 				}
 				/* BACK */
 				if (!isBlock(blocks, x, y, z - 1)) {
-					push_backs(&verts, new float[18]{
+					push_backs_rem(&verts, new float[12]{
 						xm, ym, zm, xp, ym, zm,
-						xp, yp, zm, xp, yp, zm,
-						xm, yp, zm, xm, ym, zm }, nVerts, 18);
-					push_backs(&uvs, blocks::atlas::getUV(b, 1), nUvs, 12);
+						xp, yp, zm,
+						xm, yp, zm }, nVerts, sVerts, 12);
+					push_backs(&uvs, blocks::atlas::getUV(b, 1), nUvs, sUvs, 8);
 				}
 				/* LEFT */
 				if (!isBlock(blocks, x - 1, y, z)) {
-					push_backs(&verts, new float[18]{
+					push_backs_rem(&verts, new float[12]{
 						xm, ym, zm, xm, ym, zp,
-						xm, yp, zp, xm, yp, zp,
-						xm, yp, zm, xm, ym, zm }, nVerts, 18);
-					push_backs(&uvs, blocks::atlas::getUV(b, 2), nUvs, 12);
+						xm, yp, zp,
+						xm, yp, zm }, nVerts, sVerts, 12);
+					push_backs(&uvs, blocks::atlas::getUV(b, 2), nUvs, sUvs, 8);
 				}
 				/* RIGHT */
 				if (!isBlock(blocks, x + 1, y, z)) {
-					push_backs(&verts, new float[18]{
+					push_backs_rem(&verts, new float[12]{
 						xp, ym, zm, xp, ym, zp,
-						xp, yp, zp, xp, yp, zp,
-						xp, yp, zm, xp, ym, zm }, nVerts, 18);
-					push_backs(&uvs, blocks::atlas::getUV(b, 3), nUvs, 12);
+						xp, yp, zp,
+						xp, yp, zm }, nVerts, sVerts, 12);
+					push_backs(&uvs, blocks::atlas::getUV(b, 3), nUvs, sUvs, 8);
 				}
 				/* TOP */
 				if (!isBlock(blocks, x, y + 1, z)) {
-					push_backs(&verts, new float[18]{
+					push_backs_rem(&verts, new float[12]{
 						xm, yp, zm, xm, yp, zp,
-						xp, yp, zp, xp, yp, zp,
-						xp, yp, zm, xm, yp, zm }, nVerts, 18);
-					push_backs(&uvs, blocks::atlas::getUV(b, 4), nUvs, 12);
+						xp, yp, zp,
+						xp, yp, zm }, nVerts, sVerts, 12);
+					push_backs(&uvs, blocks::atlas::getUV(b, 4), nUvs, sUvs, 8);
 				}
 				/* BOTTOM */
 				if (!isBlock(blocks, x, y - 1, z)) {
-					push_backs(&verts, new float[18]{
+					push_backs_rem(&verts, new float[12]{
 						xm, ym, zm, xm, ym, zp,
-						xp, ym, zp, xp, ym, zp,
-						xp, ym, zm, xm, ym, zm }, nVerts, 18);
-					push_backs(&uvs, blocks::atlas::getUV(b, 5), nUvs, 12);
+						xp, ym, zp,
+						xp, ym, zm }, nVerts, sVerts, 12);
+					push_backs(&uvs, blocks::atlas::getUV(b, 5), nUvs, sUvs, 8);
 				}
 			}
 		}

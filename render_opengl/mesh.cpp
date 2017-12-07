@@ -24,7 +24,7 @@ void mesh::draw(render::mesh* mesh, vec3 position, vec3 rotation)
 	glVertexPointer(3, GL_FLOAT, 0, mesh->vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, mesh->uvs);
 
-	glDrawArrays(GL_TRIANGLES, 0, mesh->vert_size);
+	glDrawArrays(mesh->rtype == 0 ? GL_TRIANGLES : GL_QUADS, 0, mesh->vert_size);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);

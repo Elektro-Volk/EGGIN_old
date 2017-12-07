@@ -3,45 +3,38 @@
 
 void World::loop()
 {
-	vec3 *p = &player->position;
+	vec3* p = &player->position;
 	while (true) {
 		int x = floor(p->x / 16.f);
 		int z = floor(p->z / 16.f);
 
-		vec3* t = FindNearestEmptyColumn(x, z, 3);
-		if (t != nullptr)
-			buildColumn(t->x, t->z);
-		delete t;
-		this_thread::sleep_for(chrono::milliseconds(5));
-
-		ClearFar(x, z, 4);
-		this_thread::sleep_for(chrono::milliseconds(10));
+		u_buildNear(x, z, 3);
+		u_clearFar(x, z, 4);
 	}
 }
 
-World::World(WorldGenerator * gen, GameObject* player)
+World::World(WorldGenerator* gen, GameObject* player)
 {
 	this->gen = gen;
 	this->player = player;
-
+	this->collumns_lock = lock_new();
 	thread t = thread(&World::loop, this);
 	t.detach();
 
 	api->gameobject.reg(this);
 }
 
-Chunk* World::getChunk(int x, int y, int z)
+Chunk * World::getChunk(int x, int y, int z)
 {
-	while (clock)
-		this_thread::yield();
-	clock = true;
-	for (CL* gs = chunks; gs != nullptr; gs = gs->next) {
-		if (x == gs->C[0]->X && z == gs->C[0]->Z) {
-			clock = false;
-			return gs->C[y];
+	lock_lock(collumns_lock);
+	for (int i = 0; i < nCollumns; i++) {
+		auto gs = collumns[i];
+		if (x == gs[0]->X && z == gs[0]->Z) {
+			lock_unlock(collumns_lock);
+			return gs[y];
 		}
 	}
-	clock = false;
+	lock_unlock(collumns_lock);
 	return nullptr;
 }
 
@@ -50,13 +43,12 @@ bool World::isColumn(int x, int z)
 	return getChunk(x, 0, z) != nullptr;
 }
 
-vec3* World::FindNearestEmptyColumn(int cx, int cz, int rad)
+void World::u_buildNear(int cx, int cz, int rad)
 {
-	if (!isColumn(cx, cz)) {
-		return new vec3(cx, 0, cz);
-	}
+	if (!isColumn(cx, cz))
+		buildColumn(cx, cz);
 	vec3 center = vec3(cx, 0, cz);
-	vec3 near;
+	vec3 _near;
 	bool isNear = false;
 	for (int z = cz - rad; z <= cz + rad; z++)
 	{
@@ -71,33 +63,32 @@ vec3* World::FindNearestEmptyColumn(int cx, int cz, int rad)
 			if (!isNear)
 			{
 				isNear = true;
-				near = current;
+				_near = current;
 			}
 			else
 			{
-				int oldDis = (int)center.distance(near);
+				int oldDis = (int)center.distance(_near);
 				if (dis < oldDis)
-					near = current;
+					_near = current;
 			}
 		}
 	}
-	return isNear ? new vec3(near) : nullptr;
+	if(isNear)
+		buildColumn(_near.x, _near.z);
 }
 
-bool World::ClearFar(int x, int z, int rad)
+void World::u_clearFar(int x, int z, int rad)
 {
-	while (clock)
-		this_thread::yield();
-	clock = true;
+	lock_lock(collumns_lock);
 	vec3 pos = vec3(x, 0.f, z);
-	for (CL* gs = chunks; gs != nullptr; gs = gs->next)
-		if (pos.distance(vec3(gs->C[0]->X, 0.f, gs->C[0]->Z)) > rad) {
-			remColumn(gs->C[0]->X, gs->C[0]->Z);
-			clock = false;
-			return true;
+	for (int i = 0; i < nCollumns; i++) {
+		Chunk* C = collumns[i][0];
+		if (pos.distance(vec3(C->X, 0.f, C->Z)) > rad) {
+			remColumn(C->X, C->Z);
+			break;
 		}
-	clock = false;
-	return false;
+	}
+	lock_unlock(collumns_lock);
 }
 
 Chunk * World::createChunk(int x, int y, int z)
@@ -110,36 +101,51 @@ Chunk * World::createChunk(int x, int y, int z)
 
 void World::buildColumn(int x, int z)
 {
-	CL* E = new CL();
-	E->next = chunks;
-	E->C = (Chunk **)malloc(sizeof(Chunk*) * 8);
+	Chunk** col = (Chunk **)malloc(sizeof(Chunk*) * 8);
+
 	for (int y = 0; y < 8; y++)
-		E->C[y] = createChunk(x, y, z);
-	gen->generateColumn(E->C);
+		col[y] = createChunk(x, y, z);
+	gen->generateColumn(col);
 	for (int y = 0; y < 8; y++) {
-		this_thread::sleep_for(chrono::milliseconds(1));
-		E->C[y]->build();
+		this_thread::yield();
+		col[y]->build();
 	}
-	chunks = E;
+
+	lock_lock(collumns_lock);
+	if (collumns == nullptr)
+		collumns = (Chunk***)malloc(sizeof(Chunk**));
+	else
+		collumns = (Chunk***)realloc(collumns, (nCollumns + 1) * sizeof(Chunk**));
+	collumns[nCollumns] = col;
+	nCollumns++;
+	lock_unlock(collumns_lock);
 }
 
 void World::remColumn(int x, int z)
 {
-	Chunk** c = nullptr;
-	CL* last = chunks;
-	for (CL* gs = chunks; gs != nullptr; gs = gs->next) {
-		if (x == gs->C[0]->X && z == gs->C[0]->Z) {
-			c = gs->C;
-
-			for (int i = 0; i < 8; i++) {
-				delete c[i];
-			}
-			last->next = gs->next;
-			delete gs;
-			break;
+	lock_lock(collumns_lock);
+	// Rebuild array
+	Chunk *** newArray = (Chunk***)malloc((nCollumns - 1) * sizeof(Chunk**));
+	int newI = 0;
+	bool removed = false;
+	for (int i = 0; i < nCollumns; i++) {
+		auto gs = collumns[i];
+		if (!removed && (x == gs[0]->X && z == gs[0]->Z)) {
+			// Free collumn
+			for (int y = 0; y < 8; y++)
+				delete gs[y];
+			free(gs);
+			removed = true;
 		}
-		last = gs;
+		else {
+			newArray[newI] = collumns[i];
+			newI++;
+		}
 	}
+	free(collumns);
+	collumns = newArray;
+	nCollumns--;
+	lock_unlock(collumns_lock);
 }
 
 bool World::setBlock(int x, int y, int z, block_data b, bool rebuild)
@@ -154,7 +160,7 @@ bool World::setBlock(int x, int y, int z, block_data b, bool rebuild)
 	return false;
 }
 
-block_data* World::getBlock(int x, int y, int z)
+block_data * World::getBlock(int x, int y, int z)
 {
 	int _x,_y,_z;
 	if (Chunk* chunk = this->getLocalPos(vec3(x, y, z), _x, _y, _z)) {
@@ -202,11 +208,17 @@ Chunk * World::getLocalPos(vec3 gpos, int &x, int &y, int &z)
 
 void World::draw3D()
 {
-	while (clock) 
-		this_thread::yield();
-	clock = true;
-	for (CL *E = chunks; E != nullptr; E = E->next)
-		for (int i = 0; i < 8; i++)
-			E->C[i]->draw3D();
-	clock = false;
+	lock_lock(collumns_lock);
+	for (int i = 0; i < nCollumns; i++) {
+		// Draw collumn
+		collumns[i][0]->draw3D();
+		collumns[i][1]->draw3D();
+		collumns[i][2]->draw3D();
+		collumns[i][3]->draw3D();
+		collumns[i][4]->draw3D();
+		collumns[i][5]->draw3D();
+		collumns[i][6]->draw3D();
+		collumns[i][7]->draw3D();
+	}
+	lock_unlock(collumns_lock);
 }

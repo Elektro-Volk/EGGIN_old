@@ -11,6 +11,11 @@ namespace render
 {
 	class mesh {
 	public:
+		enum RT {
+			triangles = 0,
+			quads = 1
+		};
+		RT rtype = RT::triangles;
 		float *vertices;
 		float *uvs;
 		unsigned int vert_size;

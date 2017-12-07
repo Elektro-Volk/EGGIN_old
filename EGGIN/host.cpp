@@ -44,7 +44,9 @@ void host::initEngine(int argc, char **argv)
 			input::isKey,
 			input::isMouseKey,
 			input::getMouseSpeed,
-			input::setLockCursor
+			input::setLockCursor,
+			input::isKeyChanged,
+			input::isMouseKeyChanged
 		},
 		{ // Textures
 			texture::load,

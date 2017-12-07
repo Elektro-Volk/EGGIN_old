@@ -15,7 +15,8 @@ namespace blocks
 
 	struct block
 	{
-		vector<tex> texture;
+		tex texture[6];
+		float** tUVS;
 	};
 
 	extern vector<block*> blocks;
@@ -24,7 +25,7 @@ namespace blocks
 
 	namespace atlas
 	{
-		extern material* mat;
+		extern int texture;
 		extern int cX;
 		extern int cY;
 		extern float uX;
